@@ -149,7 +149,7 @@ Keep each tip under 20 words, start with •.''';
       return 'You\'re $progress% toward "${goal.title}". To hit your target, save \$${(remaining / (days > 0 ? days : 1)).toStringAsFixed(2)}/day. Consider automating transfers on payday.';
     }
 
-    final prompt = 'Give one actionable tip (under 30 words) to help reach this savings goal: ${goal.title}, ${progress}% complete, \$${remaining.toStringAsFixed(0)} remaining, $days days left.';
+    final prompt = 'Give one actionable tip (under 30 words) to help reach this savings goal: ${goal.title}, $progress% complete, \$${remaining.toStringAsFixed(0)} remaining, $days days left.';
     try {
       final response = await _model.generateContent([Content.text(prompt)]);
       return response.text ?? 'Keep going! Consistency is the key to reaching your goal.';

@@ -162,7 +162,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: _prompts.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                separatorBuilder: (_, _) => const SizedBox(width: 8),
                 itemBuilder: (_, i) => GestureDetector(
                   onTap: () => _send(_prompts[i]),
                   child: Container(

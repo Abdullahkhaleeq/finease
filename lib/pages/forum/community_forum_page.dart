@@ -111,7 +111,7 @@ class _CategoryFilter extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
         itemBuilder: (_, i) {
           final cat = categories[i];
           final sel = selected == cat;
@@ -167,7 +167,7 @@ class _PostsList extends StatelessWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(20),
           itemCount: docs.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          separatorBuilder: (_, _) => const SizedBox(height: 12),
           itemBuilder: (ctx, i) {
             final data = docs[i].data() as Map<String, dynamic>;
             return _PostCard(data: data, docId: docs[i].id);
@@ -285,8 +285,11 @@ class _PostCardState extends State<_PostCard> {
   String _timeAgo(dynamic ts) {
     if (ts == null) return 'just now';
     DateTime dt;
-    if (ts is Timestamp) dt = ts.toDate();
-    else return 'just now';
+    if (ts is Timestamp) {
+      dt = ts.toDate();
+    } else {
+      return 'just now';
+    }
     final diff = DateTime.now().difference(dt);
     if (diff.inMinutes < 1) return 'just now';
     if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';

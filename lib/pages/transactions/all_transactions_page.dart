@@ -87,7 +87,7 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
                       return ListView.separated(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         itemCount: txns.length,
-                        separatorBuilder: (_, __) => const SizedBox(height: 8),
+                        separatorBuilder: (_, _) => const SizedBox(height: 8),
                         itemBuilder: (ctx, i) {
                           final t = txns[i];
                           final isIncome = t.type == 'income';
