@@ -12,7 +12,6 @@ import '../chatbot/chatbot_page.dart';
 import '../loans/loan_simulator_page.dart';
 import '../welfare/welfare_programs_page.dart';
 import '../forum/community_forum_page.dart';
-import '../notifications/notifications_page.dart';
 import '../transactions/add_transaction_page.dart';
 import '../transactions/all_transactions_page.dart';
 
@@ -253,22 +252,7 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          Row(
-            children: [
-              _iconBtn(Icons.search_rounded, () {}),
-              const SizedBox(width: 8),
-              Builder(builder: (ctx) {
-                return _iconBtn(
-                    Icons.notifications_none_rounded,
-                    () => Navigator.push(
-                        ctx,
-                        MaterialPageRoute(
-                            builder: (_) =>
-                                const NotificationsPage())),
-                    badge: true);
-              }),
-            ],
-          ),
+          const SizedBox.shrink(),
         ],
       ),
     );
@@ -469,72 +453,35 @@ class HomePage extends StatelessWidget {
 
   // ── Hero Promo Banner ─────────────────────────────────────────────────────
   Widget _buildHeroBanner(BuildContext context) {
-    return Container(
-      height: 130,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        image: const DecorationImage(
-          image: NetworkImage(
-            'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80',
-          ),
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.mode(
-              Color(0xCC1E1F6B), BlendMode.multiply),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+          boxShadow: AppTheme.floatingShadow,
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: AppTheme.accent.withValues(alpha: 0.8),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text('NEW FEATURE',
-                        style: GoogleFonts.inter(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
-                            letterSpacing: 1.2)),
-                  ),
-                  const SizedBox(height: 8),
-                  Text('AI Spending\nForecast is Live!',
-                      style: GoogleFonts.plusJakartaSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          height: 1.2)),
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 7),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text('Explore →',
-                          style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: AppTheme.primary)),
-                    ),
-                  ),
-                ],
+        child: Image.asset(
+          'assets/banner.png',
+          fit: BoxFit.contain,
+          width: double.infinity,
+          errorBuilder: (_, _, _) => Container(
+            height: 160,
+            decoration: BoxDecoration(
+              gradient: AppTheme.primaryGradient,
+              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+            ),
+            child: Center(
+              child: Text(
+                'FinEase — Your Finance Manager',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
               ),
             ),
-            const Icon(Icons.insights_rounded,
-                color: Colors.white, size: 72),
-          ],
+          ),
         ),
       ),
     );

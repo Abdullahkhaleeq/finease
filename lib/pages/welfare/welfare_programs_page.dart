@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../theme/app_theme.dart';
 
 class WelfareProgramsPage extends StatefulWidget {
@@ -14,34 +15,38 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
 
   final List<Map<String, dynamic>> _allPrograms = [
     {
+      'category': 'Financial Aid',
+      'icon': Icons.volunteer_activism_outlined,
+      'iconBgColor': const Color(0xFFEFF4FF),
+      'iconColor': AppTheme.primary,
+      'badgeLabel': 'Govt. Program',
+      'badgeColor': const Color(0xFFDCE9FF),
+      'badgeTextColor': AppTheme.primary,
+      'title': 'BISP – Benazir Income Support Programme',
+      'description':
+          'Pakistan\'s largest social safety net providing cash transfers to low-income families. Eligible households receive PKR 8,500 per quarter.',
+      'orgName': 'Government of Pakistan',
+      'statusLabel': 'Amount',
+      'statusValue': 'PKR 8,500/qtr',
+      'statusValueColor': AppTheme.primary,
+      'url': 'https://www.bisp.gov.pk',
+    },
+    {
       'category': 'Education',
       'icon': Icons.school_outlined,
       'iconBgColor': const Color(0xFFEFF4FF),
       'iconColor': AppTheme.primary,
       'badgeLabel': 'Education',
-      'badgeColor': const Color(0xFF29FCF3),
-      'badgeTextColor': const Color(0xFF00504D),
-      'title': 'Global Scholars Grant',
-      'description': 'Providing full-tuition coverage and monthly stipends for undergraduate students in STEM fields from underserved communities.',
-      'orgName': 'EduLift International',
-      'statusLabel': 'Ends in',
-      'statusValue': '12 Days',
-      'statusValueColor': AppTheme.textPrimary,
-    },
-    {
-      'category': 'Financial Aid',
-      'icon': Icons.business_center_outlined,
-      'iconBgColor': const Color(0xFFEFF4FF),
-      'iconColor': AppTheme.primary,
-      'badgeLabel': 'Financial Aid',
-      'badgeColor': const Color(0xFFFFDBCB),
-      'badgeTextColor': const Color(0xFF773207),
-      'title': 'Micro-Biz Foundation',
-      'description': 'Seed funding and zero-interest micro-loans for women-led startups in rural sectors to promote local economic growth.',
-      'orgName': 'Prosperity Partners',
-      'statusLabel': 'Amount',
-      'statusValue': 'Up to \$5,000',
-      'statusValueColor': AppTheme.textPrimary,
+      'badgeColor': const Color(0xFFE8F5E9),
+      'badgeTextColor': const Color(0xFF2E7D32),
+      'title': 'Ehsaas Undergraduate Scholarship',
+      'description':
+          'Merit-cum-need scholarships for deserving students at HEC-recognized public universities across Pakistan. Covers tuition & stipend.',
+      'orgName': 'BISP / HEC Pakistan',
+      'statusLabel': 'Coverage',
+      'statusValue': 'Full Tuition + Stipend',
+      'statusValueColor': const Color(0xFF2E7D32),
+      'url': 'https://www.bisp.gov.pk/ehsaas-educational-stipends',
     },
     {
       'category': 'Health',
@@ -49,44 +54,33 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
       'iconBgColor': const Color(0xFFEFF4FF),
       'iconColor': AppTheme.primary,
       'badgeLabel': 'Health',
-      'badgeColor': const Color(0xFFDCE9FF),
-      'badgeTextColor': AppTheme.primary,
-      'title': 'Urban Health Access',
-      'description': 'Subsidized healthcare packages including chronic disease management and mental wellness sessions for low-income families.',
-      'orgName': 'Community Care Trust',
-      'statusLabel': 'Coverage',
-      'statusValue': '80% Subsidy',
-      'statusValueColor': AppTheme.textPrimary,
-    },
-    {
-      'category': 'Housing',
-      'icon': Icons.home_work_outlined,
-      'iconBgColor': const Color(0xFFEFF4FF),
-      'iconColor': AppTheme.primary,
-      'badgeLabel': 'Housing',
       'badgeColor': const Color(0xFFFFDBCB),
       'badgeTextColor': const Color(0xFF773207),
-      'title': 'First Home Assistance',
-      'description': 'Down payment assistance and counseling for first-time homebuyers to bridge the affordability gap in urban centers.',
-      'orgName': 'Habitat Collective',
-      'statusLabel': 'Type',
-      'statusValue': 'Grant Aid',
-      'statusValueColor': AppTheme.textPrimary,
-    },
-    {
-      'category': 'Sustainability',
-      'icon': Icons.agriculture_outlined,
-      'iconBgColor': const Color(0xFFEFF4FF),
-      'iconColor': AppTheme.primary,
-      'badgeLabel': 'Sustainability',
-      'badgeColor': const Color(0xFFE8F5E9),
-      'badgeTextColor': const Color(0xFF2E7D32),
-      'title': 'Green Farm Initiative',
-      'description': 'Tools, seeds, and training for sustainable urban farming to improve local food security and community health.',
-      'orgName': 'EarthGuard NGO',
+      'title': 'Al-Khidmat Health Services',
+      'description':
+          'Free medical camps, subsidized treatment, and medicines for low-income families through a nationwide network of hospitals & dispensaries.',
+      'orgName': 'Al-Khidmat Foundation Pakistan',
       'statusLabel': 'Status',
       'statusValue': 'Open Now',
       'statusValueColor': const Color(0xFF2E7D32),
+      'url': 'https://alkhidmat.org',
+    },
+    {
+      'category': 'Financial Aid',
+      'icon': Icons.business_center_outlined,
+      'iconBgColor': const Color(0xFFEFF4FF),
+      'iconColor': AppTheme.primary,
+      'badgeLabel': 'Microfinance',
+      'badgeColor': const Color(0xFFFFDBCB),
+      'badgeTextColor': const Color(0xFF773207),
+      'title': 'Akhuwat Interest-Free Loans',
+      'description':
+          'Pakistan\'s largest Islamic microfinance institution offering interest-free (Qarz-e-Hasna) loans to deserving families for businesses, education & housing.',
+      'orgName': 'Akhuwat Foundation',
+      'statusLabel': 'Interest',
+      'statusValue': 'Zero % (Interest Free)',
+      'statusValueColor': AppTheme.primary,
+      'url': 'https://www.akhuwat.org.pk',
     },
     {
       'category': 'Education',
@@ -96,20 +90,58 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
       'badgeLabel': 'Education',
       'badgeColor': const Color(0xFF29FCF3),
       'badgeTextColor': const Color(0xFF00504D),
-      'title': 'Tech Skills Bootcamp',
-      'description': 'Intensive 12-week coding and design bootcamps with guaranteed interview placement for career changers.',
-      'orgName': 'Digital Future Org',
-      'statusLabel': 'Availability',
-      'statusValue': '48 Seats Left',
+      'title': 'Edhi Foundation – Educational Aid',
+      'description':
+          'The Edhi Foundation supports orphans and underprivileged children with free education, housing, and rehabilitation services nationwide.',
+      'orgName': 'Edhi Foundation Pakistan',
+      'statusLabel': 'Type',
+      'statusValue': 'Free Education',
       'statusValueColor': AppTheme.textPrimary,
+      'url': 'https://edhi.org',
+    },
+    {
+      'category': 'Housing',
+      'icon': Icons.home_work_outlined,
+      'iconBgColor': const Color(0xFFEFF4FF),
+      'iconColor': AppTheme.primary,
+      'badgeLabel': 'Housing',
+      'badgeColor': const Color(0xFFFFDBCB),
+      'badgeTextColor': const Color(0xFF773207),
+      'title': 'Naya Pakistan Housing Programme',
+      'description':
+          'Government low-cost housing scheme for low and middle-income families. Subsidized home loans and affordable housing units across Pakistan.',
+      'orgName': 'NPHP – Government of Pakistan',
+      'statusLabel': 'Subsidy',
+      'statusValue': 'Up to PKR 1M',
+      'statusValueColor': AppTheme.textPrimary,
+      'url': 'https://www.nphp.gov.pk',
+    },
+    {
+      'category': 'Financial Aid',
+      'icon': Icons.savings_outlined,
+      'iconBgColor': const Color(0xFFEFF4FF),
+      'iconColor': AppTheme.primary,
+      'badgeLabel': 'Relief',
+      'badgeColor': const Color(0xFFE8F5E9),
+      'badgeTextColor': const Color(0xFF2E7D32),
+      'title': 'Pakistan Bait-ul-Mal (PBM)',
+      'description':
+          'Federal welfare organization providing financial assistance to needy individuals, orphans, disabled persons, and widows through various programs.',
+      'orgName': 'Pakistan Bait-ul-Mal',
+      'statusLabel': 'Status',
+      'statusValue': 'Open Applications',
+      'statusValueColor': const Color(0xFF2E7D32),
+      'url': 'https://pbm.gov.pk',
     },
   ];
 
   List<Map<String, dynamic>> get _filteredPrograms {
     return _allPrograms.where((program) {
-      final matchesQuery = program['title'].toString().toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          program['orgName'].toString().toLowerCase().contains(_searchQuery.toLowerCase());
-      final matchesCategory = _selectedCategory == 'All Programs' || program['category'] == _selectedCategory;
+      final matchesQuery =
+          program['title'].toString().toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              program['orgName'].toString().toLowerCase().contains(_searchQuery.toLowerCase());
+      final matchesCategory =
+          _selectedCategory == 'All Programs' || program['category'] == _selectedCategory;
       return matchesQuery && matchesCategory;
     }).toList();
   }
@@ -118,32 +150,46 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: _buildAppBar(context),
+      appBar: AppBar(
+        backgroundColor: AppTheme.background,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: AppTheme.primary, size: 18),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Welfare Programs',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: AppTheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welfare Programs',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: AppTheme.primary,
-              ),
+              'Support Programs',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: AppTheme.primary,
+                    fontWeight: FontWeight.w800,
+                  ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             Text(
-              'Discover and apply for financial aid, educational grants, and health support from verified NGOs.',
+              'Verified Pakistani welfare programs — BISP, Al-Khidmat, Akhuwat, and more. Tap a program to visit their official website.',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             _buildSearchBar(context),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
             _buildCategoryChips(context),
-            const SizedBox(height: 16),
-            _buildFilters(context),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             _buildProgramList(context),
-            const SizedBox(height: 32),
+            const SizedBox(height: 28),
             _buildImpactBanner(context),
           ],
         ),
@@ -151,40 +197,11 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppTheme.background,
-      leading: IconButton(
-        icon: const Icon(Icons.menu, color: AppTheme.primary),
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Menu coming soon')));
-        },
-      ),
-      title: Text(
-        'FinEase',
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: AppTheme.primary,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      actions: [
-        const Padding(
-          padding: EdgeInsets.only(right: 20.0, left: 8.0),
-          child: CircleAvatar(
-            radius: 16,
-            backgroundColor: AppTheme.primary,
-            child: Icon(Icons.person, color: Colors.white, size: 20),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildSearchBar(BuildContext context) {
     return TextField(
       onChanged: (value) => setState(() => _searchQuery = value),
       decoration: InputDecoration(
-        hintText: 'Search for programs or organizations...',
+        hintText: 'Search programs or organizations...',
         prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondary),
         fillColor: AppTheme.surface,
         filled: true,
@@ -196,76 +213,57 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppTheme.border),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide:
+              const BorderSide(color: AppTheme.primary, width: 1.5),
+        ),
       ),
     );
   }
 
   Widget _buildCategoryChips(BuildContext context) {
+    final categories = [
+      'All Programs',
+      'Financial Aid',
+      'Education',
+      'Health',
+      'Housing',
+    ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: [
-          _buildChip(context, 'All Programs', isSelected: _selectedCategory == 'All Programs'),
-          const SizedBox(width: 8),
-          _buildChip(context, 'Education', isSelected: _selectedCategory == 'Education'),
-          const SizedBox(width: 8),
-          _buildChip(context, 'Health', isSelected: _selectedCategory == 'Health'),
-          const SizedBox(width: 8),
-          _buildChip(context, 'Housing', isSelected: _selectedCategory == 'Housing'),
-        ],
+        children: categories
+            .map((cat) => Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: _buildChip(context, cat,
+                      isSelected: _selectedCategory == cat),
+                ))
+            .toList(),
       ),
     );
   }
 
-  Widget _buildChip(BuildContext context, String label, {required bool isSelected}) {
+  Widget _buildChip(BuildContext context, String label,
+      {required bool isSelected}) {
     return GestureDetector(
       onTap: () => setState(() => _selectedCategory = label),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.primary : AppTheme.surface,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isSelected ? AppTheme.primary : AppTheme.border),
+          border: Border.all(
+              color: isSelected ? AppTheme.primary : AppTheme.border),
         ),
         child: Text(
           label,
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: isSelected ? Colors.white : AppTheme.textSecondary,
-          ),
+                color:
+                    isSelected ? Colors.white : AppTheme.textSecondary,
+              ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildFilters(BuildContext context) {
-    return Row(
-      children: [
-        _buildFilterDropdown(context, 'Location', Icons.location_on_outlined),
-        const SizedBox(width: 8),
-        _buildFilterDropdown(context, 'Support Type', Icons.filter_list),
-      ],
-    );
-  }
-
-  Widget _buildFilterDropdown(BuildContext context, String label, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEFF4FF),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 16, color: AppTheme.primary),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppTheme.primary),
-          ),
-          const SizedBox(width: 4),
-          const Icon(Icons.keyboard_arrow_down, size: 16, color: AppTheme.primary),
-        ],
       ),
     );
   }
@@ -276,134 +274,197 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 40),
         child: Center(
-          child: Text('No programs match your search.', style: Theme.of(context).textTheme.bodyLarge),
+          child: Text('No programs match your search.',
+              style: Theme.of(context).textTheme.bodyLarge),
         ),
       );
     }
-    
+
     return Column(
-      children: filtered.map((program) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: _buildProgramCard(
-            context,
-            icon: program['icon'] as IconData,
-            iconBgColor: program['iconBgColor'] as Color,
-            iconColor: program['iconColor'] as Color,
-            badgeLabel: program['badgeLabel'] as String,
-            badgeColor: program['badgeColor'] as Color,
-            badgeTextColor: program['badgeTextColor'] as Color,
-            title: program['title'] as String,
-            description: program['description'] as String,
-            orgName: program['orgName'] as String,
-            statusLabel: program['statusLabel'] as String,
-            statusValue: program['statusValue'] as String,
-            statusValueColor: program['statusValueColor'] as Color,
-          ),
-        );
-      }).toList(),
+      children: filtered
+          .map((program) => Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: _buildProgramCard(context, program),
+              ))
+          .toList(),
     );
   }
 
   Widget _buildProgramCard(
-    BuildContext context, {
-    required IconData icon,
-    required Color iconBgColor,
-    required Color iconColor,
-    required String badgeLabel,
-    required Color badgeColor,
-    required Color badgeTextColor,
-    required String title,
-    required String description,
-    required String orgName,
-    required String statusLabel,
-    required String statusValue,
-    required Color statusValueColor,
-  }) {
+      BuildContext context, Map<String, dynamic> program) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.border),
+        boxShadow: AppTheme.softShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: iconBgColor,
-                  borderRadius: BorderRadius.circular(8),
+                  color: program['iconBgColor'] as Color,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: iconColor, size: 24),
+                child: Icon(program['icon'] as IconData,
+                    color: program['iconColor'] as Color, size: 22),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: badgeColor,
+                  color: program['badgeColor'] as Color,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  badgeLabel,
+                  program['badgeLabel'] as String,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: badgeTextColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 10,
-                  ),
+                        color: program['badgeTextColor'] as Color,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10,
+                      ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Text(title, style: Theme.of(context).textTheme.titleLarge),
-          const SizedBox(height: 8),
-          Text(description, style: Theme.of(context).textTheme.bodyMedium),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
+          Text(program['title'] as String,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  )),
+          const SizedBox(height: 6),
+          Text(program['description'] as String,
+              style: Theme.of(context).textTheme.bodyMedium),
+          const SizedBox(height: 10),
           Row(
             children: [
-              const Icon(Icons.business, size: 14, color: AppTheme.textSecondary),
+              const Icon(Icons.business, size: 13, color: AppTheme.textSecondary),
               const SizedBox(width: 4),
-              Text(orgName, style: Theme.of(context).textTheme.labelSmall),
+              Text(program['orgName'] as String,
+                  style: Theme.of(context).textTheme.labelSmall),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
           const Divider(color: AppTheme.border),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(statusLabel, style: Theme.of(context).textTheme.labelSmall),
+                  Text(program['statusLabel'] as String,
+                      style: Theme.of(context).textTheme.labelSmall),
                   const SizedBox(height: 2),
                   Text(
-                    statusValue,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: statusValueColor,
-                    ),
+                    program['statusValue'] as String,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: program['statusValueColor'] as Color,
+                        ),
                   ),
                 ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Application started for \$title!')));
-                },
+              ElevatedButton.icon(
+                onPressed: () => _openUrl(context, program),
+                icon: const Icon(Icons.open_in_new_rounded, size: 14),
+                label: const Text('Visit Website'),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 10),
                   minimumSize: const Size(0, 0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text('Apply Now'),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openUrl(BuildContext context, Map<String, dynamic> program) {
+    final url = program['url'] as String;
+    final title = program['title'] as String;
+    // Copy URL to clipboard and show guidance
+    Clipboard.setData(ClipboardData(text: url));
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            const Icon(Icons.open_in_new_rounded,
+                color: AppTheme.primary),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text('Visit Website',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w800)),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w700, fontSize: 14)),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEFF4FF),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.link_rounded,
+                      size: 16, color: AppTheme.primary),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(url,
+                        style: const TextStyle(
+                            fontSize: 12,
+                            color: AppTheme.primary,
+                            fontWeight: FontWeight.w600)),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Link copied to clipboard. Open your browser and paste to visit the official website.',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Close')),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(ctx),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10))),
+            child: const Text('Got it',
+                style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -414,7 +475,11 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppTheme.primary,
+        gradient: const LinearGradient(
+          colors: [Color(0xFF2E3192), Color(0xFF1565C0)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -422,23 +487,24 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
         children: [
           Text(
             'Making a\nmeasurable\nimpact together',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w800,
+                ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 14),
           Text(
-            'FinEase has partnered with over 500+ NGOs to deliver critical support to those who need it most. Our verification process ensures your data and applications are always secure.',
+            'FinEase connects you with Pakistan\'s verified welfare programs — BISP, Akhuwat, Al-Khidmat, Edhi, and many more — so financial support is just a tap away.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white.withOpacity(0.8),
-            ),
+                  color: Colors.white.withOpacity(0.8),
+                ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 22),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildImpactStat(context, '12K+', 'APPLICATIONS'),
-              _buildImpactStat(context, '\$2M', 'FUNDED'),
+              _buildImpactStat(context, '7+', 'PROGRAMS'),
+              _buildImpactStat(context, 'PKR 2M+', 'DISBURSED'),
               _buildImpactStat(context, '85%', 'SUCCESS RATE'),
             ],
           ),
@@ -447,25 +513,26 @@ class _WelfareProgramsPageState extends State<WelfareProgramsPage> {
     );
   }
 
-  Widget _buildImpactStat(BuildContext context, String value, String label) {
+  Widget _buildImpactStat(
+      BuildContext context, String value, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           value,
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
         ),
         const SizedBox(height: 4),
         Text(
           label,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: Colors.white.withOpacity(0.7),
-            fontSize: 10,
-            letterSpacing: 0.5,
-          ),
+                color: Colors.white.withOpacity(0.7),
+                fontSize: 10,
+                letterSpacing: 0.5,
+              ),
         ),
       ],
     );

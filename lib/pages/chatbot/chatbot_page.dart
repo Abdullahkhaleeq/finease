@@ -40,7 +40,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     final envKey = dotenv.env['GEMINI_API_KEY'] ?? '';
     final key = envKey.isNotEmpty ? envKey : _fallbackKey;
     _model = GenerativeModel(
-      model: 'gemini-2.0-flash',
+      model: 'gemini-1.5-flash',
       apiKey: key,
       systemInstruction: Content.system(
         'You are FinEase AI, a professional and friendly financial advisor. '
@@ -143,6 +143,26 @@ class _ChatbotPageState extends State<ChatbotPage> {
       ),
       body: Column(
         children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.warning.withValues(alpha: 0.1),
+              border: Border(bottom: BorderSide(color: AppTheme.warning.withValues(alpha: 0.2))),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.info_outline_rounded, size: 16, color: AppTheme.warning),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Disclaimer: FinEase AI provides general information only. Not financial advice. Always consult a professional.',
+                    style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w500, color: AppTheme.textSecondary),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               controller: _scroll,

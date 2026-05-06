@@ -33,15 +33,15 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
     try {
       final key = dotenv.env['GEMINI_API_KEY'] ?? '';
       final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: key);
-      final prompt = '''Analyze this loan: Amount \$${_amount.toStringAsFixed(0)}, Rate ${_rate.toStringAsFixed(1)}% annually, ${_tenure.toInt()} months tenure.
-EMI: \$${_emi.toStringAsFixed(0)}/month, Total interest: \$${_totalInterest.toStringAsFixed(0)}.
+      final prompt = '''Analyze this loan: Amount PKR${_amount.toStringAsFixed(0)}, Rate ${_rate.toStringAsFixed(1)}% annually, ${_tenure.toInt()} months tenure.
+EMI: PKR${_emi.toStringAsFixed(0)}/month, Total interest: PKR${_totalInterest.toStringAsFixed(0)}.
 Give 3 bullet points of personalized financial advice. Be concise (under 150 words total). Start each point with •''';
       final resp = await model.generateContent([Content.text(prompt)]);
       setState(() { _aiInsight = resp.text; _aiLoading = false; });
     } catch (_) {
       setState(() {
-        _aiInsight = '• Your EMI of \$${_emi.toStringAsFixed(0)} should ideally be under 30% of your monthly income.\n\n'
-            '• At ${_rate.toStringAsFixed(1)}%, you pay \$${_totalInterest.toStringAsFixed(0)} in interest — reducing tenure by 12 months could save ~\$${(_totalInterest * 0.25).toStringAsFixed(0)}.\n\n'
+        _aiInsight = '• Your EMI of PKR${_emi.toStringAsFixed(0)} should ideally be under 30% of your monthly income.\n\n'
+            '• At ${_rate.toStringAsFixed(1)}%, you pay PKR${_totalInterest.toStringAsFixed(0)} in interest — reducing tenure by 12 months could save ~PKR${(_totalInterest * 0.25).toStringAsFixed(0)}.\n\n'
             '• ${_rate > 10 ? "Your rate is above market average (8.5%). Consider improving your credit score." : "Great rate! Lock it in before it rises."}';
         _aiLoading = false;
       });
@@ -72,16 +72,16 @@ Give 3 bullet points of personalized financial advice. Be concise (under 150 wor
                 children: [
                   Text('Monthly EMI', style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.75), fontSize: 13)),
                   const SizedBox(height: 6),
-                  Text('\$${_emi.toStringAsFixed(0)}', style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 46, fontWeight: FontWeight.w800, letterSpacing: -2)),
+                  Text('PKR${_emi.toStringAsFixed(0)}', style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 46, fontWeight: FontWeight.w800, letterSpacing: -2)),
                   Text('/month', style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.6), fontSize: 14)),
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      _statPill('Principal', '\$${(_amount / 1000).toStringAsFixed(0)}k'),
+                      _statPill('Principal', 'PKR${(_amount / 1000).toStringAsFixed(0)}k'),
                       const SizedBox(width: 12),
-                      _statPill('Interest', '\$${(_totalInterest / 1000).toStringAsFixed(1)}k'),
+                      _statPill('Interest', 'PKR${(_totalInterest / 1000).toStringAsFixed(1)}k'),
                       const SizedBox(width: 12),
-                      _statPill('Total', '\$${(_totalPayment / 1000).toStringAsFixed(1)}k'),
+                      _statPill('Total', 'PKR${(_totalPayment / 1000).toStringAsFixed(1)}k'),
                     ],
                   ),
                 ],
@@ -96,7 +96,7 @@ Give 3 bullet points of personalized financial advice. Be concise (under 150 wor
                 children: [
                   Text('Adjust Parameters', style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                   const SizedBox(height: 20),
-                  _Slider(label: 'Loan Amount', value: _amount, min: 1000, max: 500000, display: '\$${(_amount / 1000).toStringAsFixed(0)}k', onChanged: (v) => setState(() => _amount = v)),
+                  _Slider(label: 'Loan Amount', value: _amount, min: 1000, max: 500000, display: 'PKR${(_amount / 1000).toStringAsFixed(0)}k', onChanged: (v) => setState(() => _amount = v)),
                   const SizedBox(height: 16),
                   _Slider(label: 'Interest Rate', value: _rate, min: 1, max: 30, display: '${_rate.toStringAsFixed(1)}%', onChanged: (v) => setState(() => _rate = v)),
                   const SizedBox(height: 16),
@@ -194,10 +194,10 @@ Give 3 bullet points of personalized financial advice. Be concise (under 150 wor
                 children: [
                   Text('Repayment Overview', style: GoogleFonts.plusJakartaSans(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                   const SizedBox(height: 16),
-                  _row(context, 'Loan Amount', '\$${_amount.toStringAsFixed(2)}', first: true),
-                  _row(context, 'Monthly EMI', '\$${_emi.toStringAsFixed(2)}'),
-                  _row(context, 'Total Interest', '\$${_totalInterest.toStringAsFixed(2)}'),
-                  _row(context, 'Total Payment', '\$${_totalPayment.toStringAsFixed(2)}', highlight: true),
+                  _row(context, 'Loan Amount', 'PKR${_amount.toStringAsFixed(2)}', first: true),
+                  _row(context, 'Monthly EMI', 'PKR${_emi.toStringAsFixed(2)}'),
+                  _row(context, 'Total Interest', 'PKR${_totalInterest.toStringAsFixed(2)}'),
+                  _row(context, 'Total Payment', 'PKR${_totalPayment.toStringAsFixed(2)}', highlight: true),
                 ],
               ),
             ),

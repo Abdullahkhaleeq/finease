@@ -21,7 +21,7 @@ class AIService {
     }
     final prompt = '''You are a professional financial advisor AI. Analyze these recent transactions and provide exactly 3 concise, actionable insights in bullet points. Focus on savings opportunities and unusual patterns.
 
-Transactions: ${transactions.take(20).map((t) => '${t.title}(\$${t.amount.toStringAsFixed(0)}, ${t.category}, ${t.type})').join('; ')}
+Transactions: ${transactions.take(20).map((t) => '${t.title}(PKR${t.amount.toStringAsFixed(0)}, ${t.category}, ${t.type})').join('; ')}
 
 Format: Start each point with • and keep each under 25 words. Be specific.''';
 
@@ -39,7 +39,7 @@ Format: Start each point with • and keep each under 25 words. Be specific.''';
         .fold(0.0, (sum, t) => sum + t.amount);
     final topCategory = _getTopCategory(transactions);
 
-    return '''• Your top spending category is **$topCategory** — consider setting a monthly cap to avoid overspending.\n\n• You've spent \$${totalExpense.toStringAsFixed(0)} this month. The 50/30/20 rule suggests allocating 20% (\$${(totalExpense * 0.2).toStringAsFixed(0)}) to savings.\n\n• Automate savings transfers on payday to build wealth consistently without relying on willpower.''';
+    return '''• Your top spending category is **$topCategory** — consider setting a monthly cap to avoid overspending.\n\n• You've spent PKR${totalExpense.toStringAsFixed(0)} this month. The 50/30/20 rule suggests allocating 20% (PKR${(totalExpense * 0.2).toStringAsFixed(0)}) to savings.\n\n• Automate savings transfers on payday to build wealth consistently without relying on willpower.''';
   }
 
   // --------------- Unusual Spending ---------------
@@ -73,7 +73,7 @@ Format: Start each point with • and keep each under 25 words. Be specific.''';
 
   Future<String> getSavingsInsight(List<SavingGoal> goals) async {
     if (goals.isEmpty) {
-      return 'Start by creating your first savings goal! Even saving \$50/month adds up to \$600/year — the foundation of financial freedom.';
+      return 'Start by creating your first savings goal! Even saving PKR50/month adds up to PKR600/year — the foundation of financial freedom.';
     }
 
     if (!_useRealAI) {
@@ -81,7 +81,7 @@ Format: Start each point with • and keep each under 25 words. Be specific.''';
     }
 
     final prompt = '''You are a savings advisor. Analyze these goals and provide 2 tips to accelerate savings:
-Goals: ${goals.map((g) => '${g.title}: \$${g.currentAmount.toStringAsFixed(0)}/\$${g.targetAmount.toStringAsFixed(0)} (${(g.progress * 100).toStringAsFixed(0)}%)').join('; ')}
+Goals: ${goals.map((g) => '${g.title}: PKR${g.currentAmount.toStringAsFixed(0)}/PKR${g.targetAmount.toStringAsFixed(0)} (${(g.progress * 100).toStringAsFixed(0)}%)').join('; ')}
 Keep each tip under 20 words, start with •.''';
 
     try {
@@ -99,7 +99,7 @@ Keep each tip under 20 words, start with •.''';
     final days = nearestGoal.targetDate.difference(DateTime.now()).inDays;
     final perDay = days > 0 ? needed / days : needed;
 
-    return '''• Save \$${perDay.toStringAsFixed(2)}/day to reach "${nearestGoal.title}" on time — try a daily coffee-brew habit instead of café visits.\n\n• Round-up micro-savings: every purchase rounded to the next dollar, automatically saved. Small amounts build big momentum.''';
+    return '''• Save PKR${perDay.toStringAsFixed(2)}/day to reach "${nearestGoal.title}" on time — try a daily coffee-brew habit instead of café visits.\n\n• Round-up micro-savings: every purchase rounded to the next dollar, automatically saved. Small amounts build big momentum.''';
   }
 
   // --------------- Investment Suggestions ---------------
@@ -109,7 +109,7 @@ Keep each tip under 20 words, start with •.''';
       return _mockInvestmentSuggestions(totalSaved);
     }
 
-    final prompt = '''As a financial advisor, suggest 3 investment opportunities for someone with \$${totalSaved.toStringAsFixed(0)} in savings and goals: ${goals.map((g) => g.title).join(', ')}. Be specific and practical. Format as • bullet points under 20 words each.''';
+    final prompt = '''As a financial advisor, suggest 3 investment opportunities for someone with PKR${totalSaved.toStringAsFixed(0)} in savings and goals: ${goals.map((g) => g.title).join(', ')}. Be specific and practical. Format as • bullet points under 20 words each.''';
 
     try {
       final response = await _model.generateContent([Content.text(prompt)]);
@@ -121,11 +121,11 @@ Keep each tip under 20 words, start with •.''';
 
   String _mockInvestmentSuggestions(double saved) {
     if (saved < 500) {
-      return '''• Start a high-yield savings account (4–5% APY) — better than a standard bank account.\n\n• Try fractional share investing: buy partial stocks in companies you believe in for as little as \$1.\n\n• Look into micro-investment apps that round up purchases and invest the spare change automatically.''';
+      return '''• Start a high-yield savings account (4–5% APY) — better than a standard bank account.\n\n• Try fractional share investing: buy partial stocks in companies you believe in for as little as PKR1.\n\n• Look into micro-investment apps that round up purchases and invest the spare change automatically.''';
     } else if (saved < 5000) {
-      return '''• Index funds (S&P 500 ETFs) offer broad market exposure with low fees — ideal for beginners.\n\n• Consider a Roth IRA: tax-free growth with \$7,000 annual contribution limit for 2024.\n\n• Treasury I-Bonds provide inflation-protected government-backed returns with zero risk.''';
+      return '''• Index funds (S&P 500 ETFs) offer broad market exposure with low fees — ideal for beginners.\n\n• Consider a Roth IRA: tax-free growth with PKR7,000 annual contribution limit for 2024.\n\n• Treasury I-Bonds provide inflation-protected government-backed returns with zero risk.''';
     } else {
-      return '''• Diversify into REITs for real estate exposure without buying property — average 8–12% returns.\n\n• Explore a 3-fund portfolio: US stocks, international stocks, and bonds for balanced growth.\n\n• With \$${saved.toStringAsFixed(0)} saved, consider consulting a fee-only financial advisor for a personalized wealth plan.''';
+      return '''• Diversify into REITs for real estate exposure without buying property — average 8–12% returns.\n\n• Explore a 3-fund portfolio: US stocks, international stocks, and bonds for balanced growth.\n\n• With PKR${saved.toStringAsFixed(0)} saved, consider consulting a fee-only financial advisor for a personalized wealth plan.''';
     }
   }
 
@@ -146,10 +146,10 @@ Keep each tip under 20 words, start with •.''';
     final days = goal.targetDate.difference(DateTime.now()).inDays;
 
     if (!_useRealAI) {
-      return 'You\'re $progress% toward "${goal.title}". To hit your target, save \$${(remaining / (days > 0 ? days : 1)).toStringAsFixed(2)}/day. Consider automating transfers on payday.';
+      return 'You\'re $progress% toward "${goal.title}". To hit your target, save PKR${(remaining / (days > 0 ? days : 1)).toStringAsFixed(2)}/day. Consider automating transfers on payday.';
     }
 
-    final prompt = 'Give one actionable tip (under 30 words) to help reach this savings goal: ${goal.title}, $progress% complete, \$${remaining.toStringAsFixed(0)} remaining, $days days left.';
+    final prompt = 'Give one actionable tip (under 30 words) to help reach this savings goal: ${goal.title}, $progress% complete, PKR${remaining.toStringAsFixed(0)} remaining, $days days left.';
     try {
       final response = await _model.generateContent([Content.text(prompt)]);
       return response.text ?? 'Keep going! Consistency is the key to reaching your goal.';

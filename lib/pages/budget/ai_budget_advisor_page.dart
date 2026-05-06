@@ -108,13 +108,6 @@ class _AIBudgetAdvisorPageState extends State<AIBudgetAdvisorPage>
                         ),
                       ),
                     ),
-                    // ── Promo Banner ────────────────────────────────
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                        child: _buildPromoBanner(),
-                      ),
-                    ),
                     // ── Tab Bar ─────────────────────────────────────
                     SliverToBoxAdapter(
                       child: Padding(
@@ -341,75 +334,6 @@ class _AIBudgetAdvisorPageState extends State<AIBudgetAdvisorPage>
       width: 1, height: 36,
       margin: const EdgeInsets.symmetric(horizontal: 8),
       color: AppTheme.border,
-    );
-  }
-
-  // ── Promo Banner ──────────────────────────────────────────────────────────
-  Widget _buildPromoBanner() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF7C3AED), Color(0xFF4F46E5)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text('LIMITED OFFER',
-                      style: GoogleFonts.inter(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                          letterSpacing: 1.2)),
-                ),
-                const SizedBox(height: 8),
-                Text('Upgrade to FinEase Pro',
-                    style: GoogleFonts.plusJakartaSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white)),
-                const SizedBox(height: 4),
-                Text('Unlimited budgets, custom alerts\n& AI forecasting',
-                    style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: Colors.white.withValues(alpha: 0.75),
-                        height: 1.4)),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text('Get Pro — Free 7 Days',
-                      style: GoogleFonts.inter(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFF4F46E5))),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          const Icon(Icons.workspace_premium_rounded,
-              color: Colors.white, size: 64),
-        ],
-      ),
     );
   }
 

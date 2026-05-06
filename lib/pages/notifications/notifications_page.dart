@@ -11,7 +11,7 @@ class NotificationsPage extends StatelessWidget {
       _NotifData('Budget Alert', 'You\'ve used 80% of your Food budget this month.', Icons.warning_amber_rounded, AppTheme.warning, '5m ago'),
       _NotifData('AI Insight Ready', 'Your weekly financial report is ready to view.', Icons.auto_awesome_rounded, AppTheme.primary, '1h ago'),
       _NotifData('Savings Goal', 'You\'re 75% toward your Emergency Fund goal! 🎉', Icons.savings_rounded, AppTheme.success, '3h ago'),
-      _NotifData('Loan Reminder', 'Your loan EMI of \$1,245 is due in 3 days.', Icons.account_balance_rounded, AppTheme.error, '1d ago'),
+      _NotifData('Loan Reminder', 'Your loan EMI of PKR1,245 is due in 3 days.', Icons.account_balance_rounded, AppTheme.error, '1d ago'),
       _NotifData('New Welfare Program', 'A new welfare program matching your profile is available.', Icons.volunteer_activism_rounded, const Color(0xFFFF6B35), '2d ago'),
     ];
 

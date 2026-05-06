@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../theme/app_theme.dart';
+import '../forum/community_forum_page.dart';
 
 class LiteracyHubPage extends StatefulWidget {
   const LiteracyHubPage({super.key});
@@ -9,10 +11,10 @@ class LiteracyHubPage extends StatefulWidget {
 }
 
 class _LiteracyHubPageState extends State<LiteracyHubPage> {
-  final Color primaryColor = const Color(0xFF2E3192);
-  final Color secondaryColor = const Color(0xFF1BFFFF);
-  final Color darkColor = const Color(0xFF1A1A1A);
-  final Color cardColor = Colors.white;
+  final Color primaryColor = AppTheme.primary;
+  final Color secondaryColor = AppTheme.secondary;
+  final Color darkColor = AppTheme.textPrimary;
+  final Color cardColor = AppTheme.surface;
 
   @override
   Widget build(BuildContext context) {
@@ -383,7 +385,8 @@ class _LiteracyHubPageState extends State<LiteracyHubPage> {
             style: GoogleFonts.inter(color: Colors.white.withOpacity(0.8), fontSize: 14)),
           const SizedBox(height: 24),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const CommunityForumPage())),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: primaryColor,

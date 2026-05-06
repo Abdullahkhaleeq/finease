@@ -119,7 +119,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('\$',
+                          Text('PKR',
                               style: GoogleFonts.plusJakartaSans(
                                   color: Colors.white.withValues(alpha: 0.7),
                                   fontSize: 32,
@@ -145,7 +145,10 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                               ),
                               validator: (v) {
                                 if (v == null || v.isEmpty) return 'Enter amount';
-                                if (double.tryParse(v) == null) return 'Invalid number';
+                                final val = double.tryParse(v);
+                                if (val == null) return 'Invalid number';
+                                if (val <= 0) return 'Amount must be greater than 0';
+                                if (val > 10000000) return 'Amount too large';
                                 return null;
                               },
                             ),
@@ -163,12 +166,17 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                 TextFormField(
                   controller: _titleCtrl,
                   textCapitalization: TextCapitalization.sentences,
+                  maxLength: 50,
                   decoration: const InputDecoration(
                     hintText: 'e.g. Grocery shopping',
                     prefixIcon: Icon(Icons.edit_note_rounded, color: AppTheme.textSecondary),
+                    counterText: '',
                   ),
-                  validator: (v) =>
-                      (v == null || v.isEmpty) ? 'Enter a description' : null,
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Enter a description';
+                    if (v.length < 3) return 'Description too short';
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
 

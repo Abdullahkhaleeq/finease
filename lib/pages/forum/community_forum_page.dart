@@ -448,10 +448,22 @@ class _CreatePostSheetState extends State<_CreatePostSheet> {
   }
 
   Future<void> _post() async {
-    if (_titleCtrl.text.trim().isEmpty || _contentCtrl.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please fill in all fields')));
+    final title = _titleCtrl.text.trim();
+    final content = _contentCtrl.text.trim();
+
+    if (title.length < 5 || title.length > 100) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Title must be between 5 and 100 characters')),
+      );
       return;
     }
+    if (content.length < 10 || content.length > 2000) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Content must be between 10 and 2000 characters')),
+      );
+      return;
+    }
+
     setState(() => _posting = true);
     final authService = Provider.of<AuthService>(context, listen: false);
     final user = authService.user;
