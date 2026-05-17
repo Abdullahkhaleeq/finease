@@ -8,6 +8,7 @@ class NotificationsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifications = [
+<<<<<<< HEAD
       _NotifData(
         'Budget Alert',
         'You\'ve used 80% of your Food budget this month.',
@@ -43,6 +44,13 @@ class NotificationsPage extends StatelessWidget {
         const Color(0xFFFF6B35),
         '2d ago',
       ),
+=======
+      _NotifData('Budget Alert', 'You\'ve used 80% of your Food budget this month.', Icons.warning_amber_rounded, AppTheme.warning, '5m ago'),
+      _NotifData('AI Insight Ready', 'Your weekly financial report is ready to view.', Icons.auto_awesome_rounded, AppTheme.primary, '1h ago'),
+      _NotifData('Savings Goal', 'You\'re 75% toward your Emergency Fund goal! 🎉', Icons.savings_rounded, AppTheme.success, '3h ago'),
+      _NotifData('Loan Reminder', 'Your loan EMI of PKR1,245 is due in 3 days.', Icons.account_balance_rounded, AppTheme.error, '1d ago'),
+      _NotifData('New Welfare Program', 'A new welfare program matching your profile is available.', Icons.volunteer_activism_rounded, const Color(0xFFFF6B35), '2d ago'),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
     ];
 
     return Scaffold(
@@ -78,7 +86,11 @@ class NotificationsPage extends StatelessWidget {
       body: ListView.separated(
         padding: const EdgeInsets.all(20),
         itemCount: notifications.length,
+<<<<<<< HEAD
         separatorBuilder: (context, index) => const SizedBox(height: 10),
+=======
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
         itemBuilder: (ctx, i) => _NotifCard(data: notifications[i]),
       ),
     );

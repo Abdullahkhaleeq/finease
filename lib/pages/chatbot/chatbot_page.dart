@@ -46,7 +46,29 @@ class _ChatbotPageState extends State<ChatbotPage> {
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     _initializeChatbot();
+=======
+    final envKey = dotenv.env['GEMINI_API_KEY'] ?? '';
+    final key = envKey.isNotEmpty ? envKey : _fallbackKey;
+    _model = GenerativeModel(
+      model: 'gemini-1.5-flash',
+      apiKey: key,
+      systemInstruction: Content.system(
+        'You are FinEase AI, a professional and friendly financial advisor. '
+        'You specialize in personal finance, budgeting, savings, loans, and investments. '
+        'Give concise, practical advice tailored to users in Pakistan and globally. '
+        'Use bullet points for lists. Keep responses under 200 words unless detail is needed. '
+        'Always encourage smart financial decisions. Never recommend specific stocks.',
+      ),
+    );
+    _session = _model.startChat();
+    _messages.add(ChatMessage(
+      text: "Hi! I'm **FinEase AI** — your personal financial advisor 🎯\n\nI can help with budgeting, loans, savings goals, and investment basics. What's on your mind?",
+      isUser: false,
+      timestamp: DateTime.now(),
+    ));
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   }
 
   @override
@@ -227,6 +249,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
             ),
           ],
         ),
+<<<<<<< HEAD
         body: _validatingConfig
             ? const Center(child: CircularProgressIndicator())
             : _configError != null
@@ -253,6 +276,68 @@ class _ChatbotPageState extends State<ChatbotPage> {
                         }
                         return _Bubble(message: _messages[index]);
                       },
+=======
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh_rounded, color: AppTheme.textSecondary),
+            onPressed: () => setState(() {
+              _messages.clear();
+              _messages.add(ChatMessage(text: "Chat cleared. How can I help you?", isUser: false, timestamp: DateTime.now()));
+            }),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.warning.withValues(alpha: 0.1),
+              border: Border(bottom: BorderSide(color: AppTheme.warning.withValues(alpha: 0.2))),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.info_outline_rounded, size: 16, color: AppTheme.warning),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Disclaimer: FinEase AI provides general information only. Not financial advice. Always consult a professional.',
+                    style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w500, color: AppTheme.textSecondary),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              controller: _scroll,
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              itemCount: _messages.length + (_isTyping ? 1 : 0),
+              itemBuilder: (ctx, i) {
+                if (i == _messages.length) return _TypingIndicator();
+                return _Bubble(msg: _messages[i]);
+              },
+            ),
+          ),
+          // Quick prompts (only before first user message)
+          if (_messages.length == 1)
+            SizedBox(
+              height: 44,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: _prompts.length,
+                separatorBuilder: (_, _) => const SizedBox(width: 8),
+                itemBuilder: (_, i) => GestureDetector(
+                  onTap: () => _send(_prompts[i]),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: AppTheme.surface,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppTheme.primary.withValues(alpha: 0.3)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                     ),
                   ),
                   if (_messages.length == 1)

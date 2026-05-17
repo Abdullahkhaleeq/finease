@@ -46,11 +46,16 @@ dependencies:
   google_fonts: ^8.0.2
   cached_network_image: ^3.4.1
   flutter_dotenv: ^6.0.1
+<<<<<<< HEAD
   flutter_secure_storage: ^10.0.0
   url_launcher: ^6.3.2
   youtube_player_iframe: ^5.2.2
   shared_preferences: ^2.5.5
   firebase_data_connect: ^0.3.0+2
+=======
+  shared_preferences: ^2.3.2
+  url_launcher: ^6.3.1
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
 dev_dependencies:
   flutter_test:
@@ -75,8 +80,13 @@ flutter:
   uses-material-design: true
 
   assets:
+<<<<<<< HEAD
     - assets/env
     - assets/logo/logo.png
+=======
+    - .env
+    - assets/
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   # To add assets to your application, add an assets section, like this:
   # assets:

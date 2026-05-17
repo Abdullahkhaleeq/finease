@@ -116,8 +116,12 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
                       return ListView.separated(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         itemCount: txns.length,
+<<<<<<< HEAD
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 8),
+=======
+                        separatorBuilder: (_, _) => const SizedBox(height: 8),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                         itemBuilder: (ctx, i) {
                           final t = txns[i];
                           final isIncome = t.type == 'income';
@@ -174,11 +178,15 @@ class _AllTransactionsPageState extends State<AllTransactionsPage> {
                                 ),
                                 Text(
                                   '${isIncome ? '+' : '-'}PKR${t.amount.toStringAsFixed(2)}',
+<<<<<<< HEAD
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w700,
                                     color: color,
                                   ),
+=======
+                                  style: GoogleFonts.plusJakartaSans(fontSize: 15, fontWeight: FontWeight.w700, color: color),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                                 ),
                               ],
                             ),

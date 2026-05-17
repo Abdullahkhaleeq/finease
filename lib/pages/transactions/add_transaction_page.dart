@@ -129,6 +129,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+<<<<<<< HEAD
                           Text(
                             'PKR',
                             style: GoogleFonts.plusJakartaSans(
@@ -137,6 +138,13 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                               fontWeight: FontWeight.w700,
                             ),
                           ),
+=======
+                          Text('PKR',
+                              style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w700)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                           const SizedBox(width: 8),
                           Expanded(
                             child: TextFormField(
@@ -162,6 +170,7 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                                 ),
                               ),
                               validator: (v) {
+<<<<<<< HEAD
                                 if (v == null || v.isEmpty) {
                                   return 'Enter amount';
                                 }
@@ -172,6 +181,13 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                                 if (!amount.isFinite || amount <= 0) {
                                   return 'Amount must be greater than zero';
                                 }
+=======
+                                if (v == null || v.isEmpty) return 'Enter amount';
+                                final val = double.tryParse(v);
+                                if (val == null) return 'Invalid number';
+                                if (val <= 0) return 'Amount must be greater than 0';
+                                if (val > 10000000) return 'Amount too large';
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                                 return null;
                               },
                             ),
@@ -189,15 +205,24 @@ class _AddTransactionPageState extends State<AddTransactionPage>
                 TextFormField(
                   controller: _titleCtrl,
                   textCapitalization: TextCapitalization.sentences,
+                  maxLength: 50,
                   decoration: const InputDecoration(
                     hintText: 'e.g. Grocery shopping',
+<<<<<<< HEAD
                     prefixIcon: Icon(
                       Icons.edit_note_rounded,
                       color: AppTheme.textSecondary,
                     ),
+=======
+                    prefixIcon: Icon(Icons.edit_note_rounded, color: AppTheme.textSecondary),
+                    counterText: '',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                   ),
-                  validator: (v) =>
-                      (v == null || v.isEmpty) ? 'Enter a description' : null,
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Enter a description';
+                    if (v.length < 3) return 'Description too short';
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 20),
 

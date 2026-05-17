@@ -339,6 +339,7 @@ class _GoalCard extends StatelessWidget {
         children: [
           Row(
             children: [
+<<<<<<< HEAD
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,6 +357,55 @@ class _GoalCard extends StatelessWidget {
                       '${goal.category} • ${goal.daysLeft} days left',
                       style: GoogleFonts.inter(color: Colors.grey[600]),
                     ),
+=======
+              Text('TOTAL SAVINGS', 
+                style: GoogleFonts.inter(
+                  color: Colors.grey[500],
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.5,
+                )),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.05),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.auto_graph_rounded, color: accent, size: 18),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text('PKR${current.toStringAsFixed(0)}', 
+            style: GoogleFonts.plusJakartaSans(
+              color: Colors.white,
+              fontSize: 38,
+              fontWeight: FontWeight.w900,
+            )),
+          const SizedBox(height: 32),
+          Stack(
+            children: [
+              Container(
+                height: 10,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+              AnimatedContainer(
+                duration: const Duration(seconds: 1),
+                curve: Curves.fastOutSlowIn,
+                height: 10,
+                width: 300 * progress, // Simplified for placeholder
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [accent, primary]),
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: accent.withOpacity(0.4),
+                      blurRadius: 10,
+                    )
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                   ],
                 ),
               ),
@@ -399,10 +449,22 @@ class _GoalCard extends StatelessWidget {
               Text(
                 'Target ${CurrencyUtils.format(goal.targetAmount)}',
                 style: GoogleFonts.inter(
+<<<<<<< HEAD
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF334155),
                 ),
               ),
+=======
+                  color: Colors.grey[400],
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                )),
+              Text('Target PKR${target.toStringAsFixed(0)}', 
+                style: GoogleFonts.inter(
+                  color: Colors.grey[400],
+                  fontSize: 13,
+                )),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
             ],
           ),
           const SizedBox(height: 14),
@@ -527,6 +589,159 @@ class _EmptyState extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
+<<<<<<< HEAD
+=======
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: _getCategoryColor(goal.category).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(
+                    _getCategoryIcon(goal.category),
+                    color: _getCategoryColor(goal.category),
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(goal.title, 
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF1A1A1A),
+                        )),
+                      const SizedBox(height: 4),
+                      Text(goal.category, 
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          color: Colors.grey[500],
+                        )),
+                    ],
+                  ),
+                ),
+                _buildDaysLeftBadge(goal.targetDate),
+              ],
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('SAVED', 
+                      style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.grey[400], letterSpacing: 1)),
+                    const SizedBox(height: 4),
+                    Text('PKR${goal.currentAmount.toStringAsFixed(0)}', 
+                      style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w800, color: primary)),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('TARGET', 
+                      style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w800, color: Colors.grey[400], letterSpacing: 1)),
+                    const SizedBox(height: 4),
+                    Text('PKR${goal.targetAmount.toStringAsFixed(0)}', 
+                      style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w800, color: const Color(0xFF1A1A1A))),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Stack(
+              children: [
+                Container(
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF1F1F1),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+                FractionallySizedBox(
+                  widthFactor: goal.progress.clamp(0.0, 1.0),
+                  child: Container(
+                    height: 6,
+                    decoration: BoxDecoration(
+                      color: primary,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDaysLeftBadge(DateTime date) {
+    final days = date.difference(DateTime.now()).inDays;
+    final color = days < 30 ? Colors.orange : Colors.green;
+    
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text('$days days left', 
+        style: GoogleFonts.inter(color: color, fontSize: 11, fontWeight: FontWeight.bold)),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context, dynamic firestoreService, Color primary) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 60),
+        child: Column(
+          children: [
+            Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                color: primary.withOpacity(0.05),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.savings_outlined, size: 80, color: primary.withOpacity(0.2)),
+            ),
+            const SizedBox(height: 32),
+            Text('No goals set yet', 
+              style: GoogleFonts.plusJakartaSans(fontSize: 24, fontWeight: FontWeight.w800)),
+            const SizedBox(height: 12),
+            Text('Set your first saving goal and start\nyour journey to wealth.', 
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(color: Colors.grey, fontSize: 16, height: 1.5)),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: () => _showAddGoalDialog(context, firestoreService, primary),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primary,
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              child: Text('Create Goal', style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginRequired(BuildContext context, Color primary) {
+    return Center(
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       child: Column(
         children: [
           const Icon(Icons.savings_rounded, size: 56, color: Color(0xFF2E3192)),

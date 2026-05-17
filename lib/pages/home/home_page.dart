@@ -7,17 +7,25 @@ import '../../models/saving_goal.dart';
 import '../../models/transaction.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
+<<<<<<< HEAD
 import '../../utils/currency_utils.dart';
 import '../../widgets/app_config_gate.dart';
 import '../budget/ai_budget_advisor_page.dart';
+=======
+import '../../widgets/prediction_card.dart';
+import '../../widgets/coach_advice_card.dart';
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 import '../chatbot/chatbot_page.dart';
 import '../forum/community_forum_page.dart';
+<<<<<<< HEAD
 import '../analytics/analytics_screen.dart';
 import '../literacy/literacy_hub_page.dart';
 import '../loans/loan_simulator_page.dart';
 import '../marketplace/marketplace_screen.dart';
 import '../profile/profile_page.dart';
 import '../savings/savings_tracker_page.dart';
+=======
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 import '../transactions/add_transaction_page.dart';
 import '../transactions/all_transactions_page.dart';
 import '../welfare/welfare_programs_page.dart';
@@ -48,6 +56,7 @@ class _HomePageState extends State<HomePage> {
     final authService = context.watch<AuthService>();
     final firestoreService = authService.firestoreService;
     final user = authService.user;
+<<<<<<< HEAD
     final photoUrl = user?.photoURL;
     final appConfig = widget.appConfig ?? AppConfig.defaults();
     final primaryColor = appConfigColor(
@@ -61,6 +70,15 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FF),
+=======
+    final displayName =
+        user?.displayName?.split(' ').first ??
+        user?.email?.split('@').first ??
+        'User';
+
+    return Scaffold(
+      backgroundColor: AppTheme.background,
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       body: SafeArea(
         bottom: false,
         child: RefreshIndicator(
@@ -71,6 +89,7 @@ class _HomePageState extends State<HomePage> {
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
             ),
+<<<<<<< HEAD
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
@@ -393,10 +412,178 @@ class _HomePageState extends State<HomePage> {
               const SliverToBoxAdapter(child: SizedBox(height: 120)),
             ],
           ),
+=======
+
+            // ── Balance Card ─────────────────────────────────────────────
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: firestoreService != null
+                    ? StreamBuilder<List<FinancialTransaction>>(
+                        stream: firestoreService.getTransactions(),
+                        builder: (ctx, snap) {
+                          final txns = snap.data ?? [];
+                          final income = txns
+                              .where((t) => t.type == 'income')
+                              .fold(0.0, (s, t) => s + t.amount);
+                          final expense = txns
+                              .where((t) => t.type == 'expense')
+                              .fold(0.0, (s, t) => s + t.amount);
+                          return _buildBalanceCard(
+                              balance: income - expense,
+                              income: income,
+                              expense: expense);
+                        },
+                      )
+                    : _buildBalanceCard(
+                        balance: 0, income: 0, expense: 0),
+              ),
+            ),
+
+            // ── Promo Banner ─────────────────────────────────────────────
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildHeroBanner(context),
+              ),
+            ),
+
+            // ── Quick Actions ────────────────────────────────────────────
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildSectionHeader('Quick Access', null),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildQuickActions(context),
+              ),
+            ),
+
+            // ── Prediction Card ──────────────────────────────────────────
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
+              sliver: SliverToBoxAdapter(
+                child: firestoreService != null
+                    ? StreamBuilder<List<FinancialTransaction>>(
+                        stream: firestoreService.getTransactions(),
+                        builder: (ctx, snap) {
+                          final txns = snap.data ?? [];
+                          final income = txns
+                              .where((t) => t.type == 'income')
+                              .fold(0.0, (s, t) => s + t.amount);
+                          final months = txns.isEmpty
+                              ? 1
+                              : (() {
+                                  final diff = DateTime.now()
+                                      .difference(txns.last.date)
+                                      .inDays;
+                                  return (diff / 30).ceil().clamp(1, 36);
+                                })();
+                          return PredictionCard(
+                            transactions: txns,
+                            monthlyIncome: income / months,
+                          );
+                        },
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            ),
+
+            // ── AI Coach Card ─────────────────────────────────────────────
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+              sliver: SliverToBoxAdapter(
+                child: firestoreService != null
+                    ? StreamBuilder<List<FinancialTransaction>>(
+                        stream: firestoreService.getTransactions(),
+                        builder: (ctx, snap) {
+                          final txns = snap.data ?? [];
+                          final income = txns
+                              .where((t) => t.type == 'income')
+                              .fold(0.0, (s, t) => s + t.amount);
+                          final months = txns.isEmpty
+                              ? 1
+                              : (() {
+                                  final diff = DateTime.now()
+                                      .difference(txns.last.date)
+                                      .inDays;
+                                  return (diff / 30).ceil().clamp(1, 36);
+                                })();
+                          return CoachAdviceCard(
+                            transactions: txns,
+                            monthlyIncome: income / months,
+                          );
+                        },
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            ),
+
+            // ── Feature Highlight Banner ──────────────────────────────────
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildFeatureBanner(context),
+              ),
+            ),
+
+            // ── Recent Transactions ──────────────────────────────────────
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 28, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildSectionHeader(
+                  'Recent Transactions',
+                  () => Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (_) => const AllTransactionsPage())),
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+              sliver: firestoreService != null
+                  ? StreamBuilder<List<FinancialTransaction>>(
+                      stream: firestoreService.getTransactions(),
+                      builder: (ctx, snap) {
+                        if (snap.connectionState ==
+                            ConnectionState.waiting) {
+                          return const SliverToBoxAdapter(
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: AppTheme.primary)));
+                        }
+                        final txns =
+                            (snap.data ?? []).take(5).toList();
+                        if (txns.isEmpty) {
+                          return SliverToBoxAdapter(
+                              child: _buildEmptyState());
+                        }
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (ctx, i) =>
+                                _buildTransactionItem(txns[i]),
+                            childCount: txns.length,
+                          ),
+                        );
+                      },
+                    )
+                  : const SliverToBoxAdapter(
+                      child: Center(
+                          child: Text('Login to see transactions'))),
+            ),
+
+            const SliverToBoxAdapter(child: SizedBox(height: 120)),
+          ],
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
         ),
       ),
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 90),
+<<<<<<< HEAD
         child: FloatingActionButton.extended(
           onPressed: () => Navigator.push(
             context,
@@ -411,11 +598,24 @@ class _HomePageState extends State<HomePage> {
               fontWeight: FontWeight.w700,
             ),
           ),
+=======
+        child: FloatingActionButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (_) => const AddTransactionPage())),
+          backgroundColor: AppTheme.primary,
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18)),
+          child: const Icon(Icons.add_rounded,
+              color: Colors.white, size: 30),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
         ),
       ),
     );
   }
 
+<<<<<<< HEAD
   Future<int> _completedLessonCount(dynamic firestoreService) async {
     const courseIds = [
       'budget-foundations',
@@ -648,6 +848,196 @@ class _BalanceCard extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.78),
               fontWeight: FontWeight.w600,
             ),
+=======
+  // ── Top Bar ───────────────────────────────────────────────────────────────
+  Widget _buildTopBar(
+      BuildContext context, String displayName, String? photoUrl) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              _buildAvatar(photoUrl),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Good ${_greeting()},',
+                      style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: AppTheme.textHint,
+                          fontWeight: FontWeight.w500)),
+                  Text(displayName,
+                      style: GoogleFonts.plusJakartaSans(
+                          fontSize: 17,
+                          color: AppTheme.textPrimary,
+                          fontWeight: FontWeight.w800)),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox.shrink(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAvatar(String? photoUrl) {
+    return Container(
+      width: 44,
+      height: 44,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: AppTheme.primaryGradient,
+        boxShadow: [
+          BoxShadow(
+              color: AppTheme.primary.withValues(alpha: 0.25),
+              blurRadius: 12,
+              offset: const Offset(0, 4))
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(22),
+        child: photoUrl != null
+            ? Image.network(photoUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) => const Icon(
+                    Icons.person_rounded,
+                    color: Colors.white,
+                    size: 22))
+            : const Icon(Icons.person_rounded,
+                color: Colors.white, size: 22),
+      ),
+    );
+  }
+
+  Widget _iconBtn(IconData icon, VoidCallback onTap,
+      {bool badge = false}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: BorderRadius.circular(13),
+          border: Border.all(color: AppTheme.border),
+          boxShadow: AppTheme.softShadow,
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Icon(icon, color: AppTheme.textPrimary, size: 22),
+            if (badge)
+              Positioned(
+                right: 8,
+                top: 8,
+                child: Container(
+                  width: 7,
+                  height: 7,
+                  decoration: const BoxDecoration(
+                      color: AppTheme.error, shape: BoxShape.circle),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _greeting() {
+    final h = DateTime.now().hour;
+    if (h < 12) return 'Morning';
+    if (h < 17) return 'Afternoon';
+    return 'Evening';
+  }
+
+  // ── Balance Card ──────────────────────────────────────────────────────────
+  Widget _buildBalanceCard({
+    required double balance,
+    required double income,
+    required double expense,
+  }) {
+    final fmt = NumberFormat('#,##0', 'en_US');
+    final isNeg = balance < 0;
+
+    return Container(
+      padding: const EdgeInsets.all(28),
+      decoration: BoxDecoration(
+        gradient: AppTheme.heroBannerGradient,
+        borderRadius: BorderRadius.circular(AppTheme.radiusXl),
+        boxShadow: AppTheme.floatingShadow,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Total Balance',
+                  style: GoogleFonts.inter(
+                      color: Colors.white.withValues(alpha: 0.65),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500)),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(children: [
+                  Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                          color: Color(0xFF34D399),
+                          shape: BoxShape.circle)),
+                  const SizedBox(width: 5),
+                  Text('Live',
+                      style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600)),
+                ]),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '${isNeg ? '-' : ''}PKR ${fmt.format(balance.abs())}',
+            style: GoogleFonts.plusJakartaSans(
+                color: Colors.white,
+                fontSize: 34,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -1),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            isNeg ? '⚠️ Spending exceeds income' : '✓ Finances on track',
+            style: GoogleFonts.inter(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 12),
+          ),
+          const SizedBox(height: 24),
+          Container(height: 1, color: Colors.white.withValues(alpha: 0.12)),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              _balanceStat(Icons.south_west_rounded, 'Income',
+                  'PKR ${fmt.format(income)}', const Color(0xFF34D399)),
+              Container(
+                  width: 1,
+                  height: 36,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.white.withValues(alpha: 0.15)),
+              _balanceStat(Icons.north_east_rounded, 'Expenses',
+                  'PKR ${fmt.format(expense)}',
+                  const Color(0xFFFB7185)),
+            ],
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
           ),
           const SizedBox(height: 8),
           Text(
@@ -689,6 +1079,7 @@ class _BalanceCard extends StatelessWidget {
   }
 }
 
+<<<<<<< HEAD
 class _BalanceStat extends StatelessWidget {
   const _BalanceStat({required this.label, required this.value});
 
@@ -716,17 +1107,273 @@ class _BalanceStat extends StatelessWidget {
             fontSize: 16,
           ),
         ),
+=======
+  Widget _balanceStat(
+      IconData icon, String label, String amount, Color color) {
+    return Expanded(
+      child: Row(
+        children: [
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.18),
+                borderRadius: BorderRadius.circular(10)),
+            child: Icon(icon, color: color, size: 16),
+          ),
+          const SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label,
+                  style: GoogleFonts.inter(
+                      color: Colors.white.withValues(alpha: 0.55),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500)),
+              Text(amount,
+                  style: GoogleFonts.plusJakartaSans(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Hero Promo Banner ─────────────────────────────────────────────────────
+  Widget _buildHeroBanner(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+          boxShadow: AppTheme.floatingShadow,
+        ),
+        child: Image.asset(
+          'assets/banner.png',
+          fit: BoxFit.contain,
+          width: double.infinity,
+          errorBuilder: (_, _, _) => Container(
+            height: 160,
+            decoration: BoxDecoration(
+              gradient: AppTheme.primaryGradient,
+              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+            ),
+            child: Center(
+              child: Text(
+                'FinEase — Your Finance Manager',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── Feature Banner ────────────────────────────────────────────────────────
+  Widget _buildFeatureBanner(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF0EA5E9), Color(0xFF06B6D4)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.calculate_rounded,
+              color: Colors.white, size: 40),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Loan Simulator',
+                    style: GoogleFonts.plusJakartaSans(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white)),
+                Text(
+                    'Calculate EMI & compare loan options instantly',
+                    style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Colors.white.withValues(alpha: 0.8))),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          GestureDetector(
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (_) => const LoanSimulatorPage())),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text('Try Now',
+                  style: GoogleFonts.inter(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.info)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Quick Actions ─────────────────────────────────────────────────────────
+  Widget _buildQuickActions(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _actionItem(
+          context,
+          icon: Icons.auto_awesome_rounded,
+          label: 'AI Chat',
+          bg: const Color(0xFFEEF2FF),
+          fg: AppTheme.primaryLight,
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const ChatbotPage())),
+        ),
+        _actionItem(
+          context,
+          icon: Icons.calculate_rounded,
+          label: 'Loans',
+          bg: const Color(0xFFECFDF5),
+          fg: AppTheme.success,
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (_) => const LoanSimulatorPage())),
+        ),
+        _actionItem(
+          context,
+          icon: Icons.volunteer_activism_rounded,
+          label: 'Welfare',
+          bg: const Color(0xFFFFF7ED),
+          fg: AppTheme.warning,
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (_) => const WelfareProgramsPage())),
+        ),
+        _actionItem(
+          context,
+          icon: Icons.forum_rounded,
+          label: 'Forum',
+          bg: const Color(0xFFF5F3FF),
+          fg: AppTheme.accent,
+          onTap: () => Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (_) => const CommunityForumPage())),
+        ),
+      ],
+    );
+  }
+
+  Widget _actionItem(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color bg,
+    required Color fg,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: 62,
+            height: 62,
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                  color: fg.withValues(alpha: 0.15), width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                    color: fg.withValues(alpha: 0.12),
+                    blurRadius: 14,
+                    offset: const Offset(0, 5))
+              ],
+            ),
+            child: Icon(icon, color: fg, size: 28),
+          ),
+          const SizedBox(height: 8),
+          Text(label,
+              style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.textPrimary)),
+        ],
+      ),
+    );
+  }
+
+  // ── Section Header ────────────────────────────────────────────────────────
+  Widget _buildSectionHeader(String title, VoidCallback? onSeeAll) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title,
+            style: GoogleFonts.plusJakartaSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                color: AppTheme.textPrimary)),
+        if (onSeeAll != null)
+          GestureDetector(
+            onTap: onSeeAll,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 12, vertical: 5),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceCard,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text('See All',
+                  style: GoogleFonts.inter(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.primary)),
+            ),
+          ),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       ],
     );
   }
 }
 
+<<<<<<< HEAD
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader({
     required this.title,
     required this.actionLabel,
     required this.onTap,
   });
+=======
+  // ── Transaction Item ──────────────────────────────────────────────────────
+  Widget _buildTransactionItem(FinancialTransaction t) {
+    final isIncome = t.type == 'income';
+    final amountColor =
+        isIncome ? AppTheme.success : AppTheme.error;
+    final bgColor = isIncome
+        ? const Color(0xFFECFDF5)
+        : const Color(0xFFFFF1F2);
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   final String title;
   final String actionLabel;
@@ -979,16 +1626,24 @@ class _TransactionTile extends StatelessWidget {
     final isIncome = txn.type == 'income';
     final color = isIncome ? AppTheme.success : const Color(0xFFE11D48);
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
+<<<<<<< HEAD
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppTheme.border),
+=======
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+        border: Border.all(color: AppTheme.border),
+        boxShadow: AppTheme.softShadow,
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       ),
       child: Row(
         children: [
           Container(
+<<<<<<< HEAD
             width: 48,
             height: 48,
             decoration: BoxDecoration(
@@ -998,6 +1653,19 @@ class _TransactionTile extends StatelessWidget {
             child: Icon(
               isIncome ? Icons.south_west_rounded : Icons.north_east_rounded,
               color: color,
+=======
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(14)),
+            child: Icon(
+              isIncome
+                  ? Icons.south_west_rounded
+                  : Icons.north_east_rounded,
+              color: amountColor,
+              size: 22,
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
             ),
           ),
           const SizedBox(width: 14),
@@ -1005,6 +1673,7 @@ class _TransactionTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+<<<<<<< HEAD
                 Text(
                   txn.title,
                   style: GoogleFonts.plusJakartaSans(
@@ -1019,16 +1688,38 @@ class _TransactionTile extends StatelessWidget {
                     fontSize: 12,
                     color: AppTheme.textSecondary,
                   ),
+=======
+                Text(t.title,
+                    style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        color: AppTheme.textPrimary)),
+                const SizedBox(height: 3),
+                Text(
+                  '${t.category}  ·  ${DateFormat('dd MMM').format(t.date)}',
+                  style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: AppTheme.textHint,
+                      fontWeight: FontWeight.w500),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                 ),
               ],
             ),
           ),
           Text(
+<<<<<<< HEAD
             CurrencyUtils.format(txn.amount),
             style: GoogleFonts.plusJakartaSans(
               color: color,
               fontWeight: FontWeight.w800,
             ),
+=======
+            '${isIncome ? '+' : '-'} PKR ${t.amount.toStringAsFixed(0)}',
+            style: GoogleFonts.plusJakartaSans(
+                color: amountColor,
+                fontWeight: FontWeight.w700,
+                fontSize: 14),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
           ),
         ],
       ),
@@ -1036,6 +1727,7 @@ class _TransactionTile extends StatelessWidget {
   }
 }
 
+<<<<<<< HEAD
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
 
@@ -1062,6 +1754,35 @@ class _EmptyState extends StatelessWidget {
             ),
           ],
         ),
+=======
+  // ── Empty State ───────────────────────────────────────────────────────────
+  Widget _buildEmptyState() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 40),
+      child: Column(
+        children: [
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceCard,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: const Icon(Icons.receipt_long_rounded,
+                size: 36, color: AppTheme.textHint),
+          ),
+          const SizedBox(height: 16),
+          Text('No transactions yet',
+              style: GoogleFonts.plusJakartaSans(
+                  color: AppTheme.textSecondary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700)),
+          const SizedBox(height: 6),
+          Text('Tap + below to add your first one',
+              style: GoogleFonts.inter(
+                  color: AppTheme.textHint, fontSize: 13)),
+        ],
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       ),
     );
   }

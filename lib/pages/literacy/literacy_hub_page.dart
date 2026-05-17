@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'dart:async';
 import 'dart:math' as math;
 
@@ -8,6 +9,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+=======
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../theme/app_theme.dart';
+import '../forum/community_forum_page.dart';
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
 import '../../data/demo_finance_data.dart';
 import '../../models/lesson.dart';
@@ -60,6 +67,7 @@ class LiteracyHubPage extends StatelessWidget {
   }
 }
 
+<<<<<<< HEAD
 class _LiteracyExperience extends StatefulWidget {
   const _LiteracyExperience({
     required this.progressByCourse,
@@ -88,6 +96,13 @@ class _LiteracyExperienceState extends State<_LiteracyExperience> {
     _searchController.dispose();
     super.dispose();
   }
+=======
+class _LiteracyHubPageState extends State<LiteracyHubPage> {
+  final Color primaryColor = AppTheme.primary;
+  final Color secondaryColor = AppTheme.secondary;
+  final Color darkColor = AppTheme.textPrimary;
+  final Color cardColor = AppTheme.surface;
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   @override
   Widget build(BuildContext context) {
@@ -3366,6 +3381,7 @@ class _QuizScoreBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
+<<<<<<< HEAD
           Icon(Icons.workspace_premium_rounded, color: color),
           const SizedBox(width: 10),
           Expanded(
@@ -3375,6 +3391,25 @@ class _QuizScoreBanner extends StatelessWidget {
                 color: AppTheme.textPrimary,
                 fontWeight: FontWeight.w800,
               ),
+=======
+          const Icon(Icons.groups_rounded, color: Colors.white, size: 40),
+          const SizedBox(height: 16),
+          Text('Join the FinEase Circle', 
+            style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Text('Connect with 10k+ learners and experts.', 
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(color: Colors.white.withOpacity(0.8), fontSize: 14)),
+          const SizedBox(height: 24),
+          ElevatedButton(
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const CommunityForumPage())),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: primaryColor,
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
             ),
           ),
         ],

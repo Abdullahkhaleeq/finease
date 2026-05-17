@@ -47,6 +47,7 @@ class PredictionCard extends StatelessWidget {
     final warnings = budgets != null
         ? svc.getBudgetWarnings(
             transactions
+<<<<<<< HEAD
                 .where(
                   (t) =>
                       t.date.year == DateTime.now().year &&
@@ -55,6 +56,13 @@ class PredictionCard extends StatelessWidget {
                 .toList(),
             budgets!,
           )
+=======
+                .where((t) =>
+                    t.date.year == DateTime.now().year &&
+                    t.date.month == DateTime.now().month)
+                .toList(),
+            budgets!)
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
         : <BudgetWarning>[];
 
     final hasWarnings = warnings.isNotEmpty;
@@ -99,7 +107,12 @@ class PredictionCard extends StatelessWidget {
             if (hasWarnings) _buildWarningBanner(warnings.first),
 
             // ── Savings highlight ────────────────────────────────────────
+<<<<<<< HEAD
             if (savingsForecast != null) _buildSavingsRow(savingsForecast),
+=======
+            if (savingsForecast != null)
+              _buildSavingsRow(savingsForecast),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
             // ── Category progress bars ───────────────────────────────────
             if (predictions.isNotEmpty)
@@ -120,11 +133,16 @@ class PredictionCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 4),
+<<<<<<< HEAD
                   const Icon(
                     Icons.arrow_forward_rounded,
                     size: 12,
                     color: _primary,
                   ),
+=======
+                  const Icon(Icons.arrow_forward_rounded,
+                      size: 12, color: _primary),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                 ],
               ),
             ),
@@ -354,9 +372,13 @@ class PredictionCard extends StatelessWidget {
                           const SizedBox(width: 5),
                           Container(
                             padding: const EdgeInsets.symmetric(
+<<<<<<< HEAD
                               horizontal: 5,
                               vertical: 1,
                             ),
+=======
+                                horizontal: 5, vertical: 1),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                             decoration: BoxDecoration(
                               color: _danger.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4),
@@ -409,6 +431,7 @@ class PredictionCard extends StatelessWidget {
                   )
                 else
                   // Show relative bar compared to max in top categories
+<<<<<<< HEAD
                   Builder(
                     builder: (context) {
                       final maxVal = topCategories
@@ -428,6 +451,24 @@ class PredictionCard extends StatelessWidget {
                       );
                     },
                   ),
+=======
+                  Builder(builder: (context) {
+                    final maxVal = topCategories
+                        .map((e) => e.value)
+                        .reduce((a, b) => a > b ? a : b);
+                    final relRatio =
+                        maxVal > 0 ? (predicted / maxVal).clamp(0.0, 1.0) : 0.0;
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: relRatio,
+                        minHeight: 6,
+                        backgroundColor: barColor.withValues(alpha: 0.10),
+                        valueColor: AlwaysStoppedAnimation<Color>(barColor),
+                      ),
+                    );
+                  }),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
               ],
             ),
           );
@@ -438,6 +479,7 @@ class PredictionCard extends StatelessWidget {
 
   Color _categoryColor(String cat) {
     final map = {
+<<<<<<< HEAD
       'Groceries': const Color(0xFFEF4444),
       'Transport': const Color(0xFF3B82F6),
       'Healthcare': const Color(0xFF10B981),
@@ -446,6 +488,17 @@ class PredictionCard extends StatelessWidget {
       'Electricity': const Color(0xFF6366F1),
       'Savings': const Color(0xFF14B8A6),
       'Others': const Color(0xFF94A3B8),
+=======
+      'Food': const Color(0xFFEF4444),
+      'Transport': const Color(0xFF3B82F6),
+      'Shopping': const Color(0xFF8B5CF6),
+      'Health': const Color(0xFF10B981),
+      'Entertainment': const Color(0xFFF59E0B),
+      'Education': const Color(0xFF06B6D4),
+      'Utilities': const Color(0xFF6366F1),
+      'Rent': const Color(0xFFEC4899),
+      'Other': const Color(0xFF94A3B8),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
     };
     return map[cat] ?? const Color(0xFF2E3192);
   }
@@ -457,8 +510,15 @@ class _CategoryDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
+<<<<<<< HEAD
     width: 8,
     height: 8,
     decoration: BoxDecoration(color: color, shape: BoxShape.circle),
   );
+=======
+        width: 8,
+        height: 8,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      );
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 }

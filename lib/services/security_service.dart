@@ -45,6 +45,13 @@ class SecurityService extends ChangeNotifier {
     try {
       final didAuthenticate = await _localAuth.authenticate(
         localizedReason: 'Please authenticate to access FinEase',
+<<<<<<< HEAD
+=======
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       );
       if (didAuthenticate) {
         _isAppLocked = false;

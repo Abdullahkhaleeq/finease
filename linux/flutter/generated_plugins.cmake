@@ -3,8 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+<<<<<<< HEAD
   flutter_secure_storage_linux
   sqlite3_flutter_libs
+=======
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   url_launcher_linux
 )
 

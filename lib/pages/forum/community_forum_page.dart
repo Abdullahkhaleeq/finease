@@ -330,6 +330,7 @@ class _ForumFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return Material(
       color: AppTheme.background,
       child: Column(
@@ -341,6 +342,29 @@ class _ForumFilterBar extends StatelessWidget {
               selected: feedFocus,
               language: language,
               onSelected: onFeedFocusChanged,
+=======
+    return SizedBox(
+      height: 44,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: categories.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 8),
+        itemBuilder: (_, i) {
+          final cat = categories[i];
+          final sel = selected == cat;
+          return GestureDetector(
+            onTap: () => onSelect(cat),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: sel ? AppTheme.primary : AppTheme.surface,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: sel ? AppTheme.primary : AppTheme.border),
+              ),
+              child: Text(cat, style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: sel ? Colors.white : AppTheme.textSecondary)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
             ),
           ),
           SizedBox(
@@ -628,6 +652,7 @@ class _ForumPostsList extends StatelessWidget {
             message: '${snapshot.error}',
           );
         }
+<<<<<<< HEAD
 
         if (snapshot.connectionState == ConnectionState.waiting &&
             !snapshot.hasData) {
@@ -653,6 +678,15 @@ class _ForumPostsList extends StatelessWidget {
           color: AppTheme.primary,
           onRefresh: () async {
             await Future<void>.delayed(const Duration(milliseconds: 350));
+=======
+        return ListView.separated(
+          padding: const EdgeInsets.all(20),
+          itemCount: docs.length,
+          separatorBuilder: (_, _) => const SizedBox(height: 12),
+          itemBuilder: (ctx, i) {
+            final data = docs[i].data() as Map<String, dynamic>;
+            return _PostCard(data: data, docId: docs[i].id);
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
           },
           child: ListView.separated(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 96),
@@ -795,6 +829,24 @@ class _ForumDashboardHeader extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
+=======
+
+  String _timeAgo(dynamic ts) {
+    if (ts == null) return 'just now';
+    DateTime dt;
+    if (ts is Timestamp) {
+      dt = ts.toDate();
+    } else {
+      return 'just now';
+    }
+    final diff = DateTime.now().difference(dt);
+    if (diff.inMinutes < 1) return 'just now';
+    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
+    if (diff.inHours < 24) return '${diff.inHours}h ago';
+    return '${diff.inDays}d ago';
+  }
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 }
 
 class _DashboardMetric extends StatelessWidget {
@@ -1066,6 +1118,7 @@ class _LearningPathCard extends StatelessWidget {
   }
 }
 
+<<<<<<< HEAD
 class _LearningPath {
   const _LearningPath(this.title, this.icon, this.color, this.progress);
 
@@ -1331,6 +1384,45 @@ class _ForumPostCardState extends State<_ForumPostCard> {
         ..showSnackBar(SnackBar(content: Text('AI hook failed: $error')));
     } finally {
       if (mounted) setState(() => _aiBusy = false);
+=======
+  Future<void> _post() async {
+    final title = _titleCtrl.text.trim();
+    final content = _contentCtrl.text.trim();
+
+    if (title.length < 5 || title.length > 100) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Title must be between 5 and 100 characters')),
+      );
+      return;
+    }
+    if (content.length < 10 || content.length > 2000) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Content must be between 10 and 2000 characters')),
+      );
+      return;
+    }
+
+    setState(() => _posting = true);
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final user = authService.user;
+    await widget.db.collection('forum_posts').add({
+      'title': _titleCtrl.text.trim(),
+      'content': _contentCtrl.text.trim(),
+      'category': _category,
+      'authorName': user?.displayName ?? 'FinEase User',
+      'authorAvatar': user?.photoURL ?? '',
+      'authorId': user?.uid ?? '',
+      'likes': 0,
+      'comments': 0,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+    if (mounted) {
+      setState(() => _posting = false);
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: const Text('Discussion posted! ✓'), backgroundColor: AppTheme.success, behavior: SnackBarBehavior.floating, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+      );
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
     }
   }
 }

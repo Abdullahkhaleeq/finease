@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+<<<<<<< HEAD
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 
+=======
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 import '../app_constants.dart';
 import 'firestore_service.dart';
 
@@ -34,6 +37,7 @@ class AuthService extends ChangeNotifier {
 
   FirestoreService? get firestoreService => _firestoreService;
 
+<<<<<<< HEAD
   FirebaseAuth get firebaseAuth => _auth;
 
   bool get isEmailVerified => _user?.emailVerified ?? false;
@@ -52,15 +56,29 @@ class AuthService extends ChangeNotifier {
   // Constructor
   // =========================
 
+=======
+  /// Expose auth for advanced operations (e.g. password reset)
+  FirebaseAuth get firebaseAuth => _auth;
+
+  bool get isEmailVerified => _user?.emailVerified ?? false;
+  
+  bool get isAdmin => _user?.email == AppConstants.adminEmail;
+
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   AuthService() {
     _auth.authStateChanges().listen((User? user) async {
       _user = user;
 
       if (user != null) {
+<<<<<<< HEAD
         // Refresh user state
         await user.reload();
         _user = _auth.currentUser;
 
+=======
+        await user.reload(); // Refresh user state (e.g. emailVerified)
+        _user = _auth.currentUser;
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
         _firestoreService = FirestoreService(uid: user.uid);
         if (_user?.emailVerified == true ||
             _user?.email == AppConstants.adminEmail) {
@@ -77,6 +95,7 @@ class AuthService extends ChangeNotifier {
     _completeEmailLinkSignInIfPossible();
   }
 
+<<<<<<< HEAD
   // =========================
   // Reload User
   // =========================
@@ -128,14 +147,24 @@ class AuthService extends ChangeNotifier {
   // =========================
   // Anonymous Sign In
   // =========================
+=======
+  Future<void> reloadUser() async {
+    await _user?.reload();
+    _user = _auth.currentUser;
+    notifyListeners();
+  }
+
+  Future<void> sendEmailVerification() async {
+    await _user?.sendEmailVerification();
+  }
+
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   Future<void> signInAnonymously() async {
     try {
       await _auth.signInAnonymously();
     } catch (e) {
-      if (kDebugMode) {
-        print('Error signing in anonymously: $e');
-      }
+      if (kDebugMode) print('Error signing in anonymously: $e');
       rethrow;
     }
   }
@@ -146,6 +175,7 @@ class AuthService extends ChangeNotifier {
 
   Future<void> signInWithEmail(String email, String password) async {
     try {
+<<<<<<< HEAD
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -190,10 +220,20 @@ class AuthService extends ChangeNotifier {
         print('Unexpected login error: $e');
       }
 
+=======
+      await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) print('Login error [${e.code}]: ${e.message}');
+      throw Exception(e.code);
+    } catch (e) {
+      if (kDebugMode) print('Unexpected login error: $e');
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       rethrow;
     }
   }
 
+<<<<<<< HEAD
   Future<void> sendPasswordlessSignInLink(String email) async {
     final normalizedEmail = email.trim();
     final settings = ActionCodeSettings(
@@ -288,10 +328,26 @@ class AuthService extends ChangeNotifier {
         print('Unexpected signup error: $e');
       }
 
+=======
+  Future<void> signUpWithEmail(String email, String password,
+      {String? displayName}) async {
+    try {
+      final cred = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      if (displayName != null && displayName.isNotEmpty) {
+        await cred.user?.updateDisplayName(displayName);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) print('Signup error [${e.code}]: ${e.message}');
+      throw Exception(e.code);
+    } catch (e) {
+      if (kDebugMode) print('Unexpected signup error: $e');
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       rethrow;
     }
   }
 
+<<<<<<< HEAD
   Future<void> _ensureUserProfile(
     User? user,
     String email, {
@@ -321,30 +377,43 @@ class AuthService extends ChangeNotifier {
   // Password Reset
   // =========================
 
+=======
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
+<<<<<<< HEAD
       if (kDebugMode) {
         print('Reset error [${e.code}]: ${e.message}');
       }
 
+=======
+      if (kDebugMode) print('Reset error [${e.code}]: ${e.message}');
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       throw Exception(e.code);
     }
   }
 
+<<<<<<< HEAD
   // =========================
   // Sign Out
   // =========================
 
+=======
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   Future<void> signOut() async {
     try {
       await _auth.signOut();
     } catch (e) {
+<<<<<<< HEAD
       if (kDebugMode) {
         print('Error signing out: $e');
       }
 
+=======
+      if (kDebugMode) print('Error signing out: $e');
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       rethrow;
     }
   }

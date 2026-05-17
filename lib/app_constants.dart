@@ -8,6 +8,7 @@ class AppConstants {
   static const String adminEmail = 'admin@finease.app';
   static const String adminPassword = 'FineaseAdmin123!';
 
+<<<<<<< HEAD
   static const String geminiModel = 'gemini-1.5-flash-latest';
 
   static const List<String> budgetCategories = [
@@ -21,6 +22,8 @@ class AppConstants {
     'Others',
   ];
 
+=======
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   static const List<Map<String, String>> developersInfo = [
     {
       'name': 'Abdul Ahad',
@@ -32,10 +35,13 @@ class AppConstants {
       'rollNumber': 'FA22-BCS-005',
       'linkedin': 'https://www.linkedin.com/in/abdullah-khaleeq-8b6588225/',
     },
+<<<<<<< HEAD
     {
       'name': 'Rehan Ali Ch',
       'rollNumber': 'FA22-BCS-104',
       'linkedin': 'https://www.linkedin.com/in/rehan-ali-ch-80313b256/',
     },
+=======
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   ];
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+<<<<<<< HEAD
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -11,12 +12,21 @@ import '../../services/spending_analytics_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/currency_utils.dart';
 import '../../widgets/shimmer_loader.dart';
+=======
+import 'package:provider/provider.dart';
+import '../../models/transaction.dart';
+import '../../models/spending_analytics.dart';
+import '../../services/auth_service.dart';
+import '../../services/firestore_service.dart';
+import '../../services/spending_analytics_service.dart';
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
 class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     // Use the cached FirestoreService from AuthService — avoids a force-unwrap
     // crash and reuses the same instance that the rest of the app shares.
     final fs = context.watch<AuthService>().firestoreService;
@@ -32,10 +42,18 @@ class AnalyticsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.background,
+=======
+    final auth = Provider.of<AuthService>(context, listen: false);
+    final fs = FirestoreService(uid: auth.user!.uid);
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FF),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       body: StreamBuilder<List<FinancialTransaction>>(
         stream: fs.getTransactions(),
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
+<<<<<<< HEAD
             return ListView(
               padding: const EdgeInsets.fromLTRB(20, 100, 20, 40),
               children: const [
@@ -45,6 +63,10 @@ class AnalyticsScreen extends StatelessWidget {
                 SizedBox(height: 16),
                 ChartShimmer(),
               ],
+=======
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFF2E3192)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
             );
           }
           final transactions = snap.data ?? [];
@@ -53,6 +75,7 @@ class AnalyticsScreen extends StatelessWidget {
           final anomalies = svc.detectAnomalies(transactions);
           final recurring = svc.detectRecurringExpenses(transactions);
 
+<<<<<<< HEAD
           final now = DateTime.now();
           final monthTxns = transactions.where(
             (t) => t.date.year == now.year && t.date.month == now.month,
@@ -132,6 +155,37 @@ class AnalyticsScreen extends StatelessWidget {
                     // ── Recurring Expenses ───────────────────────────────
                     _AnalyticsSectionHeader(
                       icon: Icons.repeat_rounded,
+=======
+          return CustomScrollView(
+            slivers: [
+              _buildAppBar(),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 100),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    const SizedBox(height: 8),
+                    _SectionHeader(
+                      icon: Icons.bar_chart_rounded,
+                      title: 'Weekly Spending Trends',
+                      subtitle: 'Last 8 weeks',
+                    ),
+                    const SizedBox(height: 12),
+                    _WeeklyBarChart(trends: weeklyTrends),
+                    const SizedBox(height: 24),
+                    if (anomalies.isNotEmpty) ...[
+                      _SectionHeader(
+                        icon: Icons.warning_amber_rounded,
+                        title: 'Spending Alerts',
+                        subtitle: '${anomalies.length} categor${anomalies.length == 1 ? 'y' : 'ies'} flagged',
+                        iconColor: const Color(0xFFF59E0B),
+                      ),
+                      const SizedBox(height: 12),
+                      ...anomalies.map((a) => _AnomalyCard(anomaly: a)),
+                    ],
+                    const SizedBox(height: 24),
+                    _SectionHeader(
+                      icon: Icons.calendar_month_rounded,
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                       title: 'Recurring Expenses',
                       subtitle: recurring.isEmpty
                           ? 'None detected yet'
@@ -139,10 +193,16 @@ class AnalyticsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     if (recurring.isEmpty)
+<<<<<<< HEAD
                       _AnalyticsEmptyState(
                         icon: Icons.repeat_outlined,
                         message:
                             'No recurring expenses detected yet.\nAdd more transactions to see patterns.',
+=======
+                      _EmptyState(
+                        icon: Icons.receipt_long_outlined,
+                        message: 'No recurring expenses detected yet.\nAdd more transactions to see patterns.',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                       )
                     else
                       ...recurring.map((r) => _RecurringCard(expense: r)),
@@ -156,6 +216,7 @@ class AnalyticsScreen extends StatelessWidget {
     );
   }
 
+<<<<<<< HEAD
   SliverAppBar _buildAppBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 100,
@@ -760,12 +821,60 @@ class _Legend extends StatelessWidget {
   const _Legend({required this.color, required this.label});
   final Color color;
   final String label;
+=======
+  SliverAppBar _buildAppBar() {
+    return SliverAppBar(
+      expandedHeight: 120,
+      floating: false,
+      pinned: true,
+      backgroundColor: const Color(0xFF2E3192),
+      flexibleSpace: FlexibleSpaceBar(
+        titlePadding: const EdgeInsets.fromLTRB(20, 0, 0, 16),
+        title: const Text(
+          'Spending Analytics',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            fontFamily: 'Plus Jakarta Sans',
+          ),
+        ),
+        background: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF2E3192), Color(0xFF4B5BD6)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Section Header ────────────────────────────────────────────────────────
+
+class _SectionHeader extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color iconColor;
+
+  const _SectionHeader({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.iconColor = const Color(0xFF2E3192),
+  });
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
+<<<<<<< HEAD
           width: 10,
           height: 10,
           decoration: BoxDecoration(
@@ -781,17 +890,52 @@ class _Legend extends StatelessWidget {
             color: AppTheme.textSecondary,
             fontWeight: FontWeight.w500,
           ),
+=======
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: iconColor.withValues(alpha: 0.12),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, color: iconColor, size: 20),
+        ),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1E293B),
+                  fontFamily: 'Plus Jakarta Sans',
+                )),
+            Text(subtitle,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF64748B),
+                  fontFamily: 'Plus Jakarta Sans',
+                )),
+          ],
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
         ),
       ],
     );
   }
 }
 
+<<<<<<< HEAD
 // ─── Weekly Bar Chart ──────────────────────────────────────────────────────────
 
 class _WeeklyBarChart extends StatefulWidget {
   const _WeeklyBarChart({required this.trends});
   final Map<String, double> trends;
+=======
+// ─── Weekly Bar Chart ──────────────────────────────────────────────────────
+
+class _WeeklyBarChart extends StatefulWidget {
+  final Map<String, double> trends;
+  const _WeeklyBarChart({required this.trends});
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   @override
   State<_WeeklyBarChart> createState() => _WeeklyBarChartState();
@@ -807,6 +951,7 @@ class _WeeklyBarChartState extends State<_WeeklyBarChart> {
         ? 100.0
         : entries.map((e) => e.value).reduce((a, b) => a > b ? a : b);
 
+<<<<<<< HEAD
     return SizedBox(
       height: 200,
       child: BarChart(
@@ -827,6 +972,42 @@ class _WeeklyBarChartState extends State<_WeeklyBarChart> {
                     color: Colors.white,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
+=======
+    return Container(
+      height: 240,
+      padding: const EdgeInsets.fromLTRB(12, 20, 12, 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF2E3192).withValues(alpha: 0.07),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: BarChart(
+        BarChartData(
+          maxY: maxVal * 1.25,
+          barTouchData: BarTouchData(
+            touchCallback: (event, response) {
+              setState(() {
+                _touchedIndex =
+                    response?.spot?.touchedBarGroupIndex;
+              });
+            },
+            touchTooltipData: BarTouchTooltipData(
+              getTooltipColor: (_) => const Color(0xFF2E3192),
+              getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                return BarTooltipItem(
+                  'PKR ${_fmt(rod.toY)}',
+                  const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                   ),
                 );
               },
@@ -837,12 +1018,22 @@ class _WeeklyBarChartState extends State<_WeeklyBarChart> {
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
+<<<<<<< HEAD
                 reservedSize: 44,
                 getTitlesWidget: (value, meta) => Text(
                   _fmtK(value),
                   style: GoogleFonts.inter(
                     fontSize: 9,
                     color: AppTheme.textHint,
+=======
+                reservedSize: 48,
+                getTitlesWidget: (value, meta) => Text(
+                  _fmtK(value),
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Color(0xFF94A3B8),
+                    fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                   ),
                 ),
               ),
@@ -850,38 +1041,65 @@ class _WeeklyBarChartState extends State<_WeeklyBarChart> {
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
+<<<<<<< HEAD
                 reservedSize: 28,
+=======
+                reservedSize: 32,
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                 getTitlesWidget: (value, meta) {
                   final idx = value.toInt();
                   if (idx < 0 || idx >= entries.length) {
                     return const SizedBox.shrink();
                   }
+<<<<<<< HEAD
+=======
+                  // Show only "Apr 28" part
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                   final label = entries[idx].key.replaceFirst('Week of ', '');
                   return Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(
                       label,
+<<<<<<< HEAD
                       style: GoogleFonts.inter(
                         fontSize: 8,
                         color: AppTheme.textHint,
+=======
+                      style: const TextStyle(
+                        fontSize: 9,
+                        color: Color(0xFF64748B),
+                        fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                       ),
                     ),
                   );
                 },
               ),
             ),
+<<<<<<< HEAD
             rightTitles: const AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
             topTitles: const AxisTitles(
               sideTitles: SideTitles(showTitles: false),
             ),
+=======
+            rightTitles:
+                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles:
+                const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
           ),
           gridData: FlGridData(
             show: true,
             drawVerticalLine: false,
+<<<<<<< HEAD
             getDrawingHorizontalLine: (_) => FlLine(
               color: AppTheme.border,
+=======
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: const Color(0xFFE2E8F0),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
               strokeWidth: 1,
               dashArray: [4, 4],
             ),
@@ -894,6 +1112,7 @@ class _WeeklyBarChartState extends State<_WeeklyBarChart> {
               barRods: [
                 BarChartRodData(
                   toY: entries[i].value,
+<<<<<<< HEAD
                   width: isTouched ? 16 : 12,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(5),
@@ -904,6 +1123,17 @@ class _WeeklyBarChartState extends State<_WeeklyBarChart> {
                         : [
                             AppTheme.secondary.withValues(alpha: 0.7),
                             AppTheme.primary.withValues(alpha: 0.8),
+=======
+                  width: isTouched ? 18 : 14,
+                  borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(6)),
+                  gradient: LinearGradient(
+                    colors: isTouched
+                        ? [const Color(0xFF4B5BD6), const Color(0xFF2E3192)]
+                        : [
+                            const Color(0xFF818CF8),
+                            const Color(0xFF4B5BD6),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                           ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
@@ -919,12 +1149,19 @@ class _WeeklyBarChartState extends State<_WeeklyBarChart> {
     );
   }
 
+<<<<<<< HEAD
+=======
+  String _fmt(double v) => v.toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   String _fmtK(double v) {
     if (v >= 1000) return '${(v / 1000).toStringAsFixed(0)}k';
     return v.toStringAsFixed(0);
   }
 }
 
+<<<<<<< HEAD
 // ─── Analytics Section Header ─────────────────────────────────────────────────
 
 class _AnalyticsSectionHeader extends StatelessWidget {
@@ -982,11 +1219,19 @@ class _AnalyticsSectionHeader extends StatelessWidget {
 class _AnomalyCard extends StatelessWidget {
   const _AnomalyCard({required this.anomaly});
   final SpendingAnomaly anomaly;
+=======
+// ─── Anomaly Card ──────────────────────────────────────────────────────────
+
+class _AnomalyCard extends StatelessWidget {
+  final SpendingAnomaly anomaly;
+  const _AnomalyCard({required this.anomaly});
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
+<<<<<<< HEAD
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppTheme.warning.withValues(alpha: 0.05),
@@ -994,6 +1239,20 @@ class _AnomalyCard extends StatelessWidget {
         border: Border.all(
           color: AppTheme.warning.withValues(alpha: 0.3),
         ),
+=======
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFFBEB),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFF59E0B).withValues(alpha: 0.4)),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFF59E0B).withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1001,6 +1260,7 @@ class _AnomalyCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
+<<<<<<< HEAD
               color: AppTheme.warning.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
@@ -1009,6 +1269,13 @@ class _AnomalyCard extends StatelessWidget {
               color: AppTheme.warning,
               size: 18,
             ),
+=======
+              color: const Color(0xFFF59E0B).withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(Icons.warning_amber_rounded,
+                color: Color(0xFFD97706), size: 20),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -1019,28 +1286,50 @@ class _AnomalyCard extends StatelessWidget {
                   children: [
                     Text(
                       anomaly.category,
+<<<<<<< HEAD
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppTheme.textPrimary,
+=======
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF92400E),
+                        fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                       ),
                     ),
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.symmetric(
+<<<<<<< HEAD
                         horizontal: 8,
                         vertical: 3,
                       ),
                       decoration: BoxDecoration(
                         color: AppTheme.warning,
+=======
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF59E0B),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         '+${anomaly.percentageIncrease.toStringAsFixed(0)}%',
+<<<<<<< HEAD
                         style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
+=======
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                         ),
                       ),
                     ),
@@ -1049,10 +1338,18 @@ class _AnomalyCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   anomaly.message,
+<<<<<<< HEAD
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: AppTheme.textSecondary,
                     height: 1.5,
+=======
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF78350F),
+                    height: 1.5,
+                    fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                   ),
                 ),
               ],
@@ -1064,6 +1361,7 @@ class _AnomalyCard extends StatelessWidget {
   }
 }
 
+<<<<<<< HEAD
 // ─── Recurring Expense Card ───────────────────────────────────────────────────
 
 class _RecurringCard extends StatelessWidget {
@@ -1077,22 +1375,52 @@ class _RecurringCard extends StatelessWidget {
       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
     ];
+=======
+// ─── Recurring Expense Card ────────────────────────────────────────────────
+
+class _RecurringCard extends StatelessWidget {
+  final RecurringExpense expense;
+  const _RecurringCard({required this.expense});
+
+  @override
+  Widget build(BuildContext context) {
+    final months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ];
+    final d = expense.lastDetectedDate;
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
     final dateStr = '${d.day} ${months[d.month - 1]} ${d.year}';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
+<<<<<<< HEAD
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppTheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppTheme.border),
         boxShadow: AppTheme.softShadow,
+=======
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF2E3192).withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
+<<<<<<< HEAD
               color: AppTheme.primary.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(12),
             ),
@@ -1103,12 +1431,22 @@ class _RecurringCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
+=======
+              color: const Color(0xFF2E3192).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.calendar_month_rounded,
+                color: Color(0xFF2E3192), size: 22),
+          ),
+          const SizedBox(width: 14),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   expense.name,
+<<<<<<< HEAD
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
@@ -1122,6 +1460,42 @@ class _RecurringCard extends StatelessWidget {
                     fontSize: 11,
                     color: AppTheme.textSecondary,
                   ),
+=======
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF1E293B),
+                    fontFamily: 'Plus Jakarta Sans',
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    const Icon(Icons.label_outline_rounded,
+                        size: 12, color: Color(0xFF94A3B8)),
+                    const SizedBox(width: 4),
+                    Text(
+                      expense.category,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF64748B),
+                        fontFamily: 'Plus Jakarta Sans',
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    const Icon(Icons.access_time_rounded,
+                        size: 12, color: Color(0xFF94A3B8)),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Last: $dateStr',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF64748B),
+                        fontFamily: 'Plus Jakarta Sans',
+                      ),
+                    ),
+                  ],
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                 ),
               ],
             ),
@@ -1130,6 +1504,7 @@ class _RecurringCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
+<<<<<<< HEAD
                 'PKR ${_fmtNum(expense.estimatedMonthlyAmount)}',
                 style: GoogleFonts.inter(
                   fontSize: 14,
@@ -1142,6 +1517,22 @@ class _RecurringCard extends StatelessWidget {
                 style: GoogleFonts.inter(
                   fontSize: 10,
                   color: AppTheme.textHint,
+=======
+                'PKR ${_fmt(expense.estimatedMonthlyAmount)}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF2E3192),
+                  fontFamily: 'Plus Jakarta Sans',
+                ),
+              ),
+              const Text(
+                '/month',
+                style: TextStyle(
+                  fontSize: 10,
+                  color: Color(0xFF94A3B8),
+                  fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                 ),
               ),
             ],
@@ -1151,6 +1542,7 @@ class _RecurringCard extends StatelessWidget {
     );
   }
 
+<<<<<<< HEAD
   String _fmtNum(double v) => v
       .toStringAsFixed(0)
       .replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
@@ -1162,10 +1554,23 @@ class _AnalyticsEmptyState extends StatelessWidget {
   const _AnalyticsEmptyState({required this.icon, required this.message});
   final IconData icon;
   final String message;
+=======
+  String _fmt(double v) => v.toStringAsFixed(0).replaceAllMapped(
+      RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+}
+
+// ─── Empty State ───────────────────────────────────────────────────────────
+
+class _EmptyState extends StatelessWidget {
+  final IconData icon;
+  final String message;
+  const _EmptyState({required this.icon, required this.message});
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
   @override
   Widget build(BuildContext context) {
     return Container(
+<<<<<<< HEAD
       padding: const EdgeInsets.symmetric(vertical: 28),
       alignment: Alignment.center,
       child: Column(
@@ -1178,14 +1583,29 @@ class _AnalyticsEmptyState extends StatelessWidget {
             ),
             child: Icon(icon, size: 28, color: AppTheme.textHint),
           ),
+=======
+      padding: const EdgeInsets.symmetric(vertical: 32),
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          Icon(icon, size: 48, color: const Color(0xFFCBD5E1)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
           const SizedBox(height: 12),
           Text(
             message,
             textAlign: TextAlign.center,
+<<<<<<< HEAD
             style: GoogleFonts.inter(
               fontSize: 13,
               color: AppTheme.textHint,
               height: 1.6,
+=======
+            style: const TextStyle(
+              fontSize: 13,
+              color: Color(0xFF94A3B8),
+              height: 1.6,
+              fontFamily: 'Plus Jakarta Sans',
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
             ),
           ),
         ],

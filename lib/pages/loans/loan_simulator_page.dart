@@ -46,6 +46,7 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
       _aiInsight = null;
     });
     try {
+<<<<<<< HEAD
       final prompt ='''Analyze this loan for a user in Pakistan: Amount ${CurrencyUtils.exact(_amount)}, markup ${_rate.toStringAsFixed(1)}% annually, tenure ${_tenure.toInt()} months. EMI: ${CurrencyUtils.exact(_emi)}/month, Total interest: ${CurrencyUtils.exact(_totalInterest)}. Give 3 concise bullet points in PKR.''';
       final response = await _aiService.generalFinancialAnswer(prompt);
       setState(() {
@@ -55,6 +56,20 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
     } catch (error) {
       setState(() {
         _aiInsight = 'AI is not running yet: $error';
+=======
+      final key = dotenv.env['GEMINI_API_KEY'] ?? '';
+      final model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: key);
+      final prompt = '''Analyze this loan: Amount PKR${_amount.toStringAsFixed(0)}, Rate ${_rate.toStringAsFixed(1)}% annually, ${_tenure.toInt()} months tenure.
+EMI: PKR${_emi.toStringAsFixed(0)}/month, Total interest: PKR${_totalInterest.toStringAsFixed(0)}.
+Give 3 bullet points of personalized financial advice. Be concise (under 150 words total). Start each point with •''';
+      final resp = await model.generateContent([Content.text(prompt)]);
+      setState(() { _aiInsight = resp.text; _aiLoading = false; });
+    } catch (_) {
+      setState(() {
+        _aiInsight = '• Your EMI of PKR${_emi.toStringAsFixed(0)} should ideally be under 30% of your monthly income.\n\n'
+            '• At ${_rate.toStringAsFixed(1)}%, you pay PKR${_totalInterest.toStringAsFixed(0)} in interest — reducing tenure by 12 months could save ~PKR${(_totalInterest * 0.25).toStringAsFixed(0)}.\n\n'
+            '• ${_rate > 10 ? "Your rate is above market average (8.5%). Consider improving your credit score." : "Great rate! Lock it in before it rises."}';
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
         _aiLoading = false;
       });
     }
@@ -106,6 +121,7 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
                     ),
                   ),
                   const SizedBox(height: 6),
+<<<<<<< HEAD
                   Text(
                     CurrencyUtils.exact(_emi),
                     style: GoogleFonts.plusJakartaSans(
@@ -132,6 +148,18 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
                       ),
                       const SizedBox(width: 12),
                       _statPill('Total', CurrencyUtils.exact(_totalPayment)),
+=======
+                  Text('PKR${_emi.toStringAsFixed(0)}', style: GoogleFonts.plusJakartaSans(color: Colors.white, fontSize: 46, fontWeight: FontWeight.w800, letterSpacing: -2)),
+                  Text('/month', style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.6), fontSize: 14)),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      _statPill('Principal', 'PKR${(_amount / 1000).toStringAsFixed(0)}k'),
+                      const SizedBox(width: 12),
+                      _statPill('Interest', 'PKR${(_totalInterest / 1000).toStringAsFixed(1)}k'),
+                      const SizedBox(width: 12),
+                      _statPill('Total', 'PKR${(_totalPayment / 1000).toStringAsFixed(1)}k'),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                     ],
                   ),
                 ],
@@ -141,6 +169,7 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
             _SimCard(
               child: Row(
                 children: [
+<<<<<<< HEAD
                   Expanded(
                     child: _miniMetric(
                       'Suggested income',
@@ -156,6 +185,15 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
                       AppTheme.warning,
                     ),
                   ),
+=======
+                  Text('Adjust Parameters', style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                  const SizedBox(height: 20),
+                  _Slider(label: 'Loan Amount', value: _amount, min: 1000, max: 500000, display: 'PKR${(_amount / 1000).toStringAsFixed(0)}k', onChanged: (v) => setState(() => _amount = v)),
+                  const SizedBox(height: 16),
+                  _Slider(label: 'Interest Rate', value: _rate, min: 1, max: 30, display: '${_rate.toStringAsFixed(1)}%', onChanged: (v) => setState(() => _rate = v)),
+                  const SizedBox(height: 16),
+                  _Slider(label: 'Tenure', value: _tenure, min: 6, max: 120, display: '${_tenure.toInt()} mo', onChanged: (v) => setState(() => _tenure = v)),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                 ],
               ),
             ),
@@ -362,6 +400,7 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
                     ),
                   ),
                   const SizedBox(height: 16),
+<<<<<<< HEAD
                   _row(
                     context,
                     'Loan Amount',
@@ -385,6 +424,12 @@ class _LoanSimulatorPageState extends State<LoanSimulatorPage> {
                     'Suggested Monthly Income',
                     CurrencyUtils.exact(_recommendedIncome),
                   ),
+=======
+                  _row(context, 'Loan Amount', 'PKR${_amount.toStringAsFixed(2)}', first: true),
+                  _row(context, 'Monthly EMI', 'PKR${_emi.toStringAsFixed(2)}'),
+                  _row(context, 'Total Interest', 'PKR${_totalInterest.toStringAsFixed(2)}'),
+                  _row(context, 'Total Payment', 'PKR${_totalPayment.toStringAsFixed(2)}', highlight: true),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
                 ],
               ),
             ),

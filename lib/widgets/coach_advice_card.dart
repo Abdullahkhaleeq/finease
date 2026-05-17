@@ -26,7 +26,11 @@ class _CoachAdviceCardState extends State<CoachAdviceCard> {
   static const _primary = Color(0xFF2E3192);
 
   late final FinancialCoachService _svc;
+<<<<<<< HEAD
   List<InstantTip> _tips = [];
+=======
+  late List<InstantTip> _tips;
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   bool _expanded = false;
 
   @override

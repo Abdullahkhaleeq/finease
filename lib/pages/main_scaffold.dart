@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 
 import '../models/app_config.dart';
 import '../services/app_config_service.dart';
@@ -10,6 +11,14 @@ import 'budget/ai_budget_advisor_page.dart';
 import 'chatbot/chatbot_page.dart';
 import 'home/home_page.dart';
 import 'loans/loan_simulator_page.dart';
+=======
+import '../theme/app_theme.dart';
+import 'home/home_page.dart';
+import 'literacy/literacy_hub_page.dart';
+import 'savings/savings_tracker_page.dart';
+import 'budget/ai_budget_advisor_page.dart';
+import 'analytics/analytics_screen.dart';
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 import 'profile/profile_page.dart';
 
 class MainScaffold extends StatefulWidget {
@@ -22,6 +31,18 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   int _selectedIndex = 0;
 
+<<<<<<< HEAD
+=======
+  final List<Widget> _pages = const [
+    HomePage(),
+    LiteracyHubPage(),
+    SavingsTrackerPage(),
+    AIBudgetAdvisorPage(),
+    AnalyticsScreen(),
+    ProfilePage(),
+  ];
+
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
 
   @override
@@ -96,15 +117,16 @@ class _MainScaffoldState extends State<MainScaffold> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF2E3192).withValues(alpha: 0.08),
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
+                  color: AppTheme.primary.withValues(alpha: 0.10),
+                  blurRadius: 24,
+                  offset: const Offset(0, 6),
                 ),
               ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+<<<<<<< HEAD
                 _buildNavItem(
                   0,
                   Icons.home_rounded,
@@ -136,6 +158,14 @@ class _MainScaffoldState extends State<MainScaffold> {
                   'Profile',
                   activeColor: primaryColor,
                 ),
+=======
+                _buildNavItem(0, Icons.dashboard_rounded, 'Home'),
+                _buildNavItem(1, Icons.school_rounded, 'Literacy'),
+                _buildNavItem(2, Icons.savings_rounded, 'Savings'),
+                _buildNavItem(3, Icons.smart_toy_rounded, 'Budget'),
+                _buildNavItem(4, Icons.analytics_rounded, 'Analytics'),
+                _buildNavItem(5, Icons.person_rounded, 'Profile'),
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
               ],
             ),
           ),
@@ -152,11 +182,15 @@ class _MainScaffoldState extends State<MainScaffold> {
     Color activeColor = const Color(0xFF2E3192),
   }) {
     final isSelected = _selectedIndex == index;
+<<<<<<< HEAD
     final color = isSelected
         ? activeColor
         : enabled
         ? const Color(0xFF94A3B8)
         : const Color(0xFFCBD5E1);
+=======
+    final color = isSelected ? AppTheme.primary : AppTheme.textHint;
+>>>>>>> c281882508291f62fb38dea4bf5b14544423a4e3
 
     return GestureDetector(
       onTap: () => _onItemTapped(index),
@@ -167,7 +201,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF2E3192).withValues(alpha: 0.08)
+              ? AppTheme.primary.withValues(alpha: 0.09)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
